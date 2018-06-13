@@ -34,7 +34,8 @@ passport.use('google', new GoogleStrategy({
   callbackURL: '/auth/google/callback',
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
-    'https://www.googleapis.com/auth/calendar'],
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
@@ -46,7 +47,7 @@ passport.use('google', new GoogleStrategy({
         refreshToken: refreshtoken,
         accessToken: accesstoken,
         googleId: profile.id,
-        email: profile.emails,
+        email: profile.emails[0].value,
         name: profile.displayName,
         firstName: profile.name.givenName,
       });
@@ -67,6 +68,16 @@ passport.use('google', new GoogleStrategy({
           date: event.start.dateTime,
         }, () => {});
       });
+    });
+    // get contacts from google people
+    await controller.getContacts(accesstoken, (people) => {
+      console.log(people);
+      // const contacts = JSON.parse(people).connections;
+      // console.log(contacts);
+      // contacts.forEach(async (contact) => {
+      //   const person = contact.names[0].displayName;
+      //   await controller.addContact(profile.id, person, () => { });
+      // });
     });
     if (existingUser) {
       return done(null, existingUser);
