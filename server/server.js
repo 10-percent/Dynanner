@@ -13,7 +13,9 @@ const controller = require('./controllers');
 
 const app = express();
 const pathway = path.join(__dirname, '/../react-client/dist');
+const sw = path.join(__dirname, '/../react-client');
 app.use(express.static(pathway));
+app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
 app.use(bodyParser.json());
@@ -35,7 +37,7 @@ passport.use('google', new GoogleStrategy({
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar'],
-}, async (accesstoken, refreshtoken, params, profile, done) => {
+}, async(accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
     const existingUser = await db.User.findOne({ googleId: profile.id });
@@ -77,16 +79,16 @@ passport.use('google', new GoogleStrategy({
   }
 }));
 
-const vapidKeys = {
-  publicKey: process.env.VAPID_PUBLIC_KEY,
-  privateKey: process.env.VAPID_PRIVATE_KEY,
-};
+// const vapidKeys = {
+//   publicKey: process.env.VAPID_PUBLIC_KEY,
+//   privateKey: process.env.VAPID_PRIVATE_KEY,
+// };
 
-webPush.setVapidDetails(
-  'mailto:emilyyu518@gmail.com',
-  vapidKeys.publicKey,
-  vapidKeys.privateKey,
-);
+// webPush.setVapidDetails(
+//   'mailto:emilyyu518@gmail.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey,
+// );
 
 app.use('/', routes);
 

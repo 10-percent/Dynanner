@@ -29,7 +29,7 @@ class PastEventsHome extends React.Component {
   render() {
     return (
       <div>
-        <h4 id="past-logs-heading">Your Past Logs</h4>
+        <h4 id="past-logs-heading">Contacts</h4>
         <div className="row justify-content-center">
           <div className="col-lg-8">
             <Link
