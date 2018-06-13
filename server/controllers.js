@@ -24,6 +24,28 @@ const getEvents = async (token, callback) => {
   });
 };
 
+
+const getContacts = async (token, callback) => {
+  const options = {
+    method: 'GET',
+    url: 'https://people.googleapis.com/v1/people/me/connections',
+    Accept: 'application/json',
+    qs: {
+      access_token: token,
+      personFields: 'names',
+      sortOrder: 'First_Name_Ascending',
+    },
+  };
+  await request(options, (error, response, body) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(body);
+      callback(body);
+    }
+  });
+}
+
 const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, callback) => {
   oauth2Client.setCredentials({
     access_token: accesstoken,
@@ -87,6 +109,26 @@ const addEvent = async (id, event, callback) => {
       user.events.push(newEvent);
       await user.save();
     }
+    callback(user);
+  });
+};
+
+const addContact = async (id, person, callback) => {
+  await db.User.findOne({ googleID: id }, async (err, user) => {
+    const existingContact = user.contacts.reduce((doesExist, user) => {
+      if (user.name === person) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingContact) {
+      const newContact = new db.Contact({
+        name: person || '',
+      });
+      user.contacts.push(newContact);
+      await user.save();
+    }
+    console.log(user);
     callback(user);
   });
 };
@@ -210,3 +252,5 @@ module.exports.fetchUpcomingEvents = fetchUpcomingEvents;
 module.exports.fetchPastEvents = fetchPastEvents;
 module.exports.fetchReview = fetchReview;
 module.exports.addEventToGoogleCal = addEventToGoogleCal;
+module.exports.getContacts = getContacts;
+module.exports.addContact = addContact;

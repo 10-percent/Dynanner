@@ -34,7 +34,8 @@ passport.use('google', new GoogleStrategy({
   callbackURL: '/auth/google/callback',
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
-    'https://www.googleapis.com/auth/calendar'],
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
@@ -68,6 +69,16 @@ passport.use('google', new GoogleStrategy({
         }, () => {});
       });
     });
+    // get contacts from google people
+    await controller.getContacts(accesstoken, (people) => {
+      console.log(people);
+      // const contacts = JSON.parse(people).connections;
+      // console.log(contacts);
+      // contacts.forEach(async (contact) => {
+      //   const person = contact.names[0].displayName;
+      //   await controller.addContact(profile.id, person, () => { });
+      // });
+    });
     if (existingUser) {
       return done(null, existingUser);
     }
@@ -77,16 +88,16 @@ passport.use('google', new GoogleStrategy({
   }
 }));
 
-const vapidKeys = {
-  publicKey: process.env.VAPID_PUBLIC_KEY,
-  privateKey: process.env.VAPID_PRIVATE_KEY,
-};
+// const vapidKeys = {
+//   publicKey: process.env.VAPID_PUBLIC_KEY,
+//   privateKey: process.env.VAPID_PRIVATE_KEY,
+// };
 
-webPush.setVapidDetails(
-  'mailto:emilyyu518@gmail.com',
-  vapidKeys.publicKey,
-  vapidKeys.privateKey,
-);
+// webPush.setVapidDetails(
+//   'mailto:emilyyu518@gmail.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey,
+// );
 
 app.use('/', routes);
 
