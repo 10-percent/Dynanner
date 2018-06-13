@@ -46,7 +46,7 @@ passport.use('google', new GoogleStrategy({
         refreshToken: refreshtoken,
         accessToken: accesstoken,
         googleId: profile.id,
-        email: profile.emails[0].value,
+        email: profile.emails,
         name: profile.displayName,
         firstName: profile.name.givenName,
       });
@@ -77,16 +77,16 @@ passport.use('google', new GoogleStrategy({
   }
 }));
 
-const vapidKeys = {
-  publicKey: process.env.VAPID_PUBLIC_KEY,
-  privateKey: process.env.VAPID_PRIVATE_KEY,
-};
+// const vapidKeys = {
+//   publicKey: process.env.VAPID_PUBLIC_KEY,
+//   privateKey: process.env.VAPID_PRIVATE_KEY,
+// };
 
-webPush.setVapidDetails(
-  'mailto:emilyyu518@gmail.com',
-  vapidKeys.publicKey,
-  vapidKeys.privateKey,
-);
+// webPush.setVapidDetails(
+//   'mailto:emilyyu518@gmail.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey,
+// );
 
 app.use('/', routes);
 
