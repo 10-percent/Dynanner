@@ -40,11 +40,10 @@ const getContacts = async (token, callback) => {
     if (error) {
       console.error(error);
     } else {
-      console.log(body);
       callback(body);
     }
   });
-}
+};
 
 const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, callback) => {
   oauth2Client.setCredentials({
@@ -92,6 +91,7 @@ const saveSubscription = (subscription, userGoogleId) => {
 
 const addEvent = async (id, event, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
+    console.log(user);
     const existingEvent = user.events.reduce((doesExist, e) => {
       if (e.title === event.title && e.description === event.description) {
         doesExist = true;
@@ -113,8 +113,8 @@ const addEvent = async (id, event, callback) => {
   });
 };
 
-const addContact = async (id, person, callback) => {
-  await db.User.findOne({ googleID: id }, async (err, user) => {
+const addContact = async (id, person) => {
+  await db.User.findOne({ googleId: id }, async (err, user) => {
     const existingContact = user.contacts.reduce((doesExist, user) => {
       if (user.name === person) {
         doesExist = true;
@@ -128,8 +128,6 @@ const addContact = async (id, person, callback) => {
       user.contacts.push(newContact);
       await user.save();
     }
-    console.log(user);
-    callback(user);
   });
 };
 
