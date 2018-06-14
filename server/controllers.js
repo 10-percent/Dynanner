@@ -238,6 +238,17 @@ const fetchReview = (currentUserId, eventId, callback) => {
   });
 };
 
+const fetchContacts = (currentUserId, callback) => {
+  db.User.findOne({ googleId: currentUserId }, (error, user) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      const contacts = user.contacts;
+      callback(contacts);
+    }
+  });
+};
+
 const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback) => {
   oauth2Client.setCredentials({
     access_token: accesstoken,
@@ -277,3 +288,4 @@ module.exports.addEventToGoogleCal = addEventToGoogleCal;
 module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
+module.exports.fetchContacts = fetchContacts;
