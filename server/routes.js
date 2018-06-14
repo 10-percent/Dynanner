@@ -194,5 +194,11 @@ router.get('/api/getEmail', async (req, res) => {
   });
 });
 
+router.post('api/uploadImage', async (req, res) => {
+  await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
+    await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
+  });
+})
+
 
 module.exports = router;
