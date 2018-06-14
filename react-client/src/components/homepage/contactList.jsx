@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-import PastEventEntry from './pastEventEntry.jsx';
+import ContactEntry from './pastEventEntry.jsx';
 
 class ContactList extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class ContactList extends React.Component {
   }
 
   getPastEvents() {
-    Axios.get('/api/pastEvents')
+    Axios.get('/api/getContacts')
       .then((response) => {
         this.setState({ contacts: response.data.slice(-5) });
       })
@@ -36,7 +36,7 @@ class ContactList extends React.Component {
         </div>
         <div className="list-group">
           {this.state.contacts.map((contact, i) => (
-            <PastEventEntry contact={contact} key={i} />
+            <ContactEntry contact={contact} key={i} />
           ))}
         </div>
       </div>

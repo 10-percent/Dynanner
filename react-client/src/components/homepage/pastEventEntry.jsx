@@ -2,9 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-const PastEventEntry = ({ event }) => {
-  const { title, date } = event;
-
+const ContactEntry = ({ contact }) => {
   return (
     <Link
       className="list-group-item list-group-item-action flex-column align-items-start past-event-entry"
@@ -14,11 +12,11 @@ const PastEventEntry = ({ event }) => {
       }}
     >
       <div className="d-flex w-100 justify-content-end">
-        <small className="date-row">{moment(date).format('dddd, MMMM Do')}</small>
+        <small className="date-row">{moment().format('dddd, MMMM Do')}</small>
       </div>
-      <h6 className="mb-1">{title}</h6>
+      <h6 className="mb-1">{contact.name}</h6>
     </Link>
   );
 };
 
-export default PastEventEntry;
+export default ContactEntry;
