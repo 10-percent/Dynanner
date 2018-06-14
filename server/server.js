@@ -31,14 +31,15 @@ passport.deserializeUser((obj, done) => {
 });
 
 passport.use('google', new GoogleStrategy({
+  immediate: true,
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback',
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/photoslibrary.appendonly'],
-    'https://www.googleapis.com/auth/contacts'],
+    'https://www.googleapis.com/auth/photoslibrary.appendonly',
+    'https://www.googleapis.com/auth/contacts']
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
