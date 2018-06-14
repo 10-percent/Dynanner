@@ -91,7 +91,6 @@ const saveSubscription = (subscription, userGoogleId) => {
 
 const addEvent = async (id, event, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
-    console.log(user);
     const existingEvent = user.events.reduce((doesExist, e) => {
       if (e.title === event.title && e.description === event.description) {
         doesExist = true;
@@ -113,7 +112,7 @@ const addEvent = async (id, event, callback) => {
   });
 };
 
-const addContact = async (id, person) => {
+const addContact = async (id, person, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
     const existingContact = user.contacts.reduce((doesExist, user) => {
       if (user.name === person) {
