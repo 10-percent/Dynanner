@@ -13,7 +13,9 @@ const controller = require('./controllers');
 
 const app = express();
 const pathway = path.join(__dirname, '/../react-client/dist');
+const sw = path.join(__dirname, '/../react-client');
 app.use(express.static(pathway));
+app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
 app.use(bodyParser.json());
@@ -29,6 +31,7 @@ passport.deserializeUser((obj, done) => {
 });
 
 passport.use('google', new GoogleStrategy({
+  immediate: true,
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback',

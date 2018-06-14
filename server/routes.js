@@ -17,7 +17,7 @@ router.get(
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    // successRedirect: '/',
+    successRedirect: '/',
     failureRedirect: '/',
   }),
   async (req, res) => {
@@ -201,7 +201,7 @@ router.post('api/uploadImage', async (req, res) => {
 });
 
 router.get('/api/getContacts', (req, res) => {
-  const currentUserId = req.query.googleId;
+  const currentUserId = req.user.googleId;
   db.User.findOne({ googleId: currentUserId }, (err, user) => {
     controller.fetchContacts(user.googleId, (data) => {
       res.send(data);
