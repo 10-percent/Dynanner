@@ -113,7 +113,7 @@ const addEvent = async (id, event, callback) => {
   });
 };
 
-const addContact = async (id, person) => {
+const addContact = async (id, person, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
     const existingContact = user.contacts.reduce((doesExist, user) => {
       if (user.name === person) {
@@ -239,6 +239,11 @@ const fetchReview = (currentUserId, eventId, callback) => {
   });
 };
 
+// const fetchContacts = () =>{
+//   db.User.findOne({ })
+// };
+
+
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
 module.exports.addEvent = addEvent;
@@ -252,3 +257,4 @@ module.exports.fetchReview = fetchReview;
 module.exports.addEventToGoogleCal = addEventToGoogleCal;
 module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
+// module.exports.fetchContacts = fetchContacts;
