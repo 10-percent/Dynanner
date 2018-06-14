@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import PastEventEntry from './pastEventEntry.jsx';
 
-class PastEventsHome extends React.Component {
+class ContactList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,4 +44,4 @@ class PastEventsHome extends React.Component {
   }
 }
 
-export default PastEventsHome;
+export default ContactList;

@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import webPush from 'web-push';
 import UpcomingEvents from './upcomingEvents.jsx';
-import PastEventsHome from './pastEvents.jsx';
+import ContactList from './contactList.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -113,7 +113,7 @@ class Home extends React.Component {
               <UpcomingEvents />
             </div>
             <div className="col-lg-4 white-container" id="past-logs-home">
-              <PastEventsHome />
+              <ContactList />
             </div>
           </div>
         </div>
