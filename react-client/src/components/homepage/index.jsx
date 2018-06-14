@@ -37,9 +37,11 @@ class Home extends React.Component {
 
   initializeServiceWorker() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/serviceWorker.js')
-        .then(this.handleSWRegistration)
-        .then(this.saveSubscription);
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/serviceWorker.js')
+          .then(this.handleSWRegistration)
+          .then(this.saveSubscription);
+      });
     } else {
       console.log('Service workers aren\'t supported in this browser.');
     }
