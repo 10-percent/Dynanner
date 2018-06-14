@@ -73,7 +73,7 @@ passport.use('google', new GoogleStrategy({
     });
     // get contacts from google people
     await controller.getContacts(accesstoken, (people) => {
-      console.log(people);
+      // console.log(people);
       // const contacts = JSON.parse(people).connections;
       // console.log(contacts);
       // contacts.forEach(async (contact) => {

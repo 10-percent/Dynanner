@@ -7,7 +7,7 @@ class PastEventsHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: [],
+      contacts: [],
     };
     this.getPastEvents = this.getPastEvents.bind(this);
   }
@@ -32,31 +32,11 @@ class PastEventsHome extends React.Component {
         <h4 id="past-logs-heading">Contacts</h4>
         <div className="row justify-content-center">
           <div className="col-lg-8">
-            <Link
-              className="btn btn-outline-info btn-block work-play-button"
-              to={{
-              pathname: '/pastEvents',
-              state: { category: 'work' },
-              }}
-            >
-              <span className="fa fa-briefcase" /> Work
-            </Link>
-            <br />
-            <Link
-              className="btn btn-outline-info btn-block work-play-button"
-              to={{
-              pathname: '/pastEvents',
-              state: { category: 'play' },
-              }}
-            >
-              <span className="fa fa-paper-plane" /> Play
-            </Link>
           </div>
         </div>
-        <h5 id="recently-completed-heading">Recently Completed</h5>
         <div className="list-group">
-          {this.state.events.map((event, i) => (
-            <PastEventEntry event={event} key={i} />
+          {this.state.contacts.map((contact, i) => (
+            <PastEventEntry contact={contact} key={i} />
           ))}
         </div>
       </div>
