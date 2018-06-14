@@ -12,7 +12,7 @@ const ContactEntry = ({ contact }) => {
       }}
     >
       <div className="d-flex w-100 justify-content-end">
-        <small className="date-row">{moment().format('dddd, MMMM Do')}</small>
+        <small className="date-row">{contact.phone}</small>
       </div>
       <h6 className="mb-1">{contact.name}</h6>
     </Link>
