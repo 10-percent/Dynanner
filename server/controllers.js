@@ -24,6 +24,27 @@ const getEvents = async (token, callback) => {
   });
 };
 
+
+const getContacts = async (token, callback) => {
+  const options = {
+    method: 'GET',
+    url: 'https://people.googleapis.com/v1/people/me/connections',
+    Accept: 'application/json',
+    qs: {
+      access_token: token,
+      personFields: 'names',
+      sortOrder: 'First_Name_Ascending',
+    },
+  };
+  await request(options, (error, response, body) => {
+    if (error) {
+      console.error(error);
+    } else {
+      callback(body);
+    }
+  });
+};
+
 const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, callback) => {
   oauth2Client.setCredentials({
     access_token: accesstoken,
@@ -70,6 +91,7 @@ const saveSubscription = (subscription, userGoogleId) => {
 
 const addEvent = async (id, event, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
+    console.log(user);
     const existingEvent = user.events.reduce((doesExist, e) => {
       if (e.title === event.title && e.description === event.description) {
         doesExist = true;
@@ -88,6 +110,24 @@ const addEvent = async (id, event, callback) => {
       await user.save();
     }
     callback(user);
+  });
+};
+
+const addContact = async (id, person) => {
+  await db.User.findOne({ googleId: id }, async (err, user) => {
+    const existingContact = user.contacts.reduce((doesExist, user) => {
+      if (user.name === person) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingContact) {
+      const newContact = new db.Contact({
+        name: person || '',
+      });
+      user.contacts.push(newContact);
+      await user.save();
+    }
   });
 };
 
@@ -224,17 +264,6 @@ const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback)
   });
 };
 
-
-
-
-// const uploadImage = (image, callback) => {
-  // const options = {
-    // method: 'POST',
-    // url: 'https://photoslibrary.googleapis.com/v1/uploads',
-    // 'Content-type': 'application/octet-stream'
-  // };
-// };
-
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
 module.exports.addEvent = addEvent;
@@ -246,4 +275,6 @@ module.exports.fetchUpcomingEvents = fetchUpcomingEvents;
 module.exports.fetchPastEvents = fetchPastEvents;
 module.exports.fetchReview = fetchReview;
 module.exports.addEventToGoogleCal = addEventToGoogleCal;
+module.exports.getContacts = getContacts;
+module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
