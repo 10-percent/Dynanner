@@ -19,7 +19,7 @@ class ContactList extends React.Component {
   getPastEvents() {
     Axios.get('/api/getContacts')
       .then((response) => {
-        this.setState({ contacts: response.data.slice(-5) });
+        this.setState({ contacts: response.data });
       })
       .catch((error) => {
         console.error('past event error', error);

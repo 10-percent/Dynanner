@@ -79,7 +79,7 @@ passport.use('google', new GoogleStrategy({
       if (contacts === undefined) {
         console.log('no contacts');
       } else {
-        const contactList = contacts.map(contact => contact.names[0].displayName);
+        const contactList = contacts.map(contact => contact);
         contactList.forEach(async (contact) => {
           await controller.addContact(profile.id, contact);
         }, () => {});

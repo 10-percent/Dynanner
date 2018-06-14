@@ -32,7 +32,7 @@ const getContacts = async (token, callback) => {
     Accept: 'application/json',
     qs: {
       access_token: token,
-      personFields: 'names',
+      personFields: 'names,phoneNumbers',
       sortOrder: 'First_Name_Ascending',
     },
   };
@@ -113,16 +113,19 @@ const addEvent = async (id, event, callback) => {
 };
 
 const addContact = async (id, person, callback) => {
+  const contactName = person.names[0].displayName;
+  const contactNumber = person.phoneNumbers[0].value;
   await db.User.findOne({ googleId: id }, async (err, user) => {
     const existingContact = user.contacts.reduce((doesExist, user) => {
-      if (user.name === person) {
+      if (user.name === contactName) {
         doesExist = true;
       }
       return doesExist;
     }, false);
     if (!existingContact) {
       const newContact = new db.Contact({
-        name: person || '',
+        name: contactName || '',
+        phone: contactNumber
       });
       user.contacts.push(newContact);
       await user.save();

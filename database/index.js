@@ -26,6 +26,7 @@ const eventSchema = mongoose.Schema({
 
 const contactSchema = mongoose.Schema({
   name: String,
+  phone: String
 }, {
   usePushEach: true,
 });
