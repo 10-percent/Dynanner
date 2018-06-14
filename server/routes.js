@@ -97,9 +97,9 @@ router.post('/api/saveSubscription', (req, res) => {
           },
         }));
       });
-  } else {
+  } 
     isValidSaveRequest(req, res);
-  }
+  
 });
 
 router.get('/api/upcomingEvents', (req, res) => {
@@ -198,7 +198,16 @@ router.post('api/uploadImage', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
     await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
   });
-})
+});
+
+router.get('/api/getContacts', (req, res) => {
+  const currentUserId = req.query.googleId;
+  db.User.findOne({ googleId: currentUserId }, (err, user) => {
+    controller.fetchContacts(user.googleId, (data) => {
+      res.send(data);
+    });
+  });
+});
 
 
 module.exports = router;
