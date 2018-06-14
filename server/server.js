@@ -35,7 +35,7 @@ passport.use('google', new GoogleStrategy({
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/photoslibrary.appendonly'],
+    'https://www.googleapis.com/auth/photoslibrary.appendonly',
     'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
@@ -72,13 +72,15 @@ passport.use('google', new GoogleStrategy({
     });
     // get contacts from google people
     await controller.getContacts(accesstoken, (people) => {
-      // console.log(people);
       const contacts = JSON.parse(people).connections;
-      // console.log(contacts);
-      const contactList = contacts.map(contact => contact.names[0].displayName);
-      contactList.forEach(async (contact) => {
-        await controller.addContact(profile.id, contact);
-      });
+      if (contacts === undefined) {
+        console.log('no contacts');
+      } else {
+        const contactList = contacts.map(contact => contact.names[0].displayName);
+        contactList.forEach(async (contact) => {
+          await controller.addContact(profile.id, contact);
+        }, () => {});
+      }
     });
     if (existingUser) {
       return done(null, existingUser);
