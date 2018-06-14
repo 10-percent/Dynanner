@@ -71,13 +71,13 @@ passport.use('google', new GoogleStrategy({
     });
     // get contacts from google people
     await controller.getContacts(accesstoken, (people) => {
-      console.log(people);
-      // const contacts = JSON.parse(people).connections;
+      // console.log(people);
+      const contacts = JSON.parse(people).connections;
       // console.log(contacts);
-      // contacts.forEach(async (contact) => {
-      //   const person = contact.names[0].displayName;
-      //   await controller.addContact(profile.id, person, () => { });
-      // });
+      const contactList = contacts.map(contact => contact.names[0].displayName);
+      contactList.forEach(async (contact) => {
+        await controller.addContact(profile.id, contact);
+      });
     });
     if (existingUser) {
       return done(null, existingUser);
