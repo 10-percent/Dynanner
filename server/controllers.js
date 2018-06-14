@@ -91,7 +91,6 @@ const saveSubscription = (subscription, userGoogleId) => {
 
 const addEvent = async (id, event, callback) => {
   await db.User.findOne({ googleId: id }, async (err, user) => {
-    console.log(user);
     const existingEvent = user.events.reduce((doesExist, e) => {
       if (e.title === event.title && e.description === event.description) {
         doesExist = true;
@@ -239,10 +238,30 @@ const fetchReview = (currentUserId, eventId, callback) => {
   });
 };
 
-// const fetchContacts = () =>{
-//   db.User.findOne({ })
-// };
-
+const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback) => {
+  oauth2Client.setCredentials({
+    access_token: accesstoken,
+    refresh_token: refreshtoken,
+  });
+  oauth2Client.refreshAccessToken((err, tokens) => {
+    const options = {
+      method: 'POST',
+      url: 'https://photoslibrary.googleapis.com/v1/uploads',
+      headers:
+        {
+          Authorization: `Bearer ${tokens.access_token}`,
+          'Content-Type': 'application/octet-stream',
+        },
+        body: {
+          media_binary_data: image
+        }
+    };
+    request(options, (error, response, body) => {
+      if (error) { console.log(`Error trying to upload image: ${error}`); }
+      callback();
+    });
+  });
+};
 
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
@@ -257,4 +276,4 @@ module.exports.fetchReview = fetchReview;
 module.exports.addEventToGoogleCal = addEventToGoogleCal;
 module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
-// module.exports.fetchContacts = fetchContacts;
+module.exports.uploadImage = uploadImage;
