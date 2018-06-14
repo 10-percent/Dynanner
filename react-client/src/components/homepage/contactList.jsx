@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-import ContactEntry from './pastEventEntry.jsx';
+import ContactEntry from './contactEntry.jsx';
 
 class ContactList extends React.Component {
   constructor(props) {
