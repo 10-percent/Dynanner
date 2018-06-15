@@ -38,7 +38,7 @@ passport.use('google', new GoogleStrategy({
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/photoslibrary.appendonly',
+    'https://www.googleapis.com/auth/photoslibrary',
     'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
@@ -85,6 +85,16 @@ passport.use('google', new GoogleStrategy({
         }, () => {});
       }
     });
+
+    await controller.getAlbums(accesstoken, (album) => {
+      const albums = JSON.parse(album);
+      if (!albums) {
+        console.log('No albums!');
+      } else {
+        console.log(albums, 'this is the albums');
+      }
+    });
+
     if (existingUser) {
       return done(null, existingUser);
     }
