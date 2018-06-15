@@ -91,6 +91,7 @@ passport.use('google', new GoogleStrategy({
       if (!photos) {
         console.log('No Photos!');
       } else {
+        console.log('done');
         controller.addPhotos(photos, profile.id);
       }
     });
