@@ -290,13 +290,14 @@ const sendText = (currentUserId ,number) => {
   .then((message) => { console.log(message.sid) })
 };
 
-const getAlbums = (token, callback) => {
+const getPhotos = (token, callback) => {
   const options = {
-    method: 'GET',
-    url: 'https://photoslibrary.googleapis.com/v1/albums',
+    method: 'Post',
+    url: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
     Accept: 'application/json',
     qs: {
       access_token: token,
+      pageSize: 10
     },
   };
   request(options, (error, response, body) => {
@@ -307,6 +308,28 @@ const getAlbums = (token, callback) => {
     }
   });
 }
+
+const addPhotos = (photos, id) => {
+  db.User.findOne({ googleId: id }, (err, user) => {
+    photos.mediaItems.forEach((photo) => {
+      const newPhoto = new db.Photo({
+        id: photo.baseUrl
+      });
+      user.photos.push(newPhoto);
+      user.save();
+    });
+  });
+}
+
+const fetchPhotos = (currentUserId, callback) => {
+  User.findOne({googleId: currentUserId}, (err, user) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, user.photos);
+    }
+  });
+};
 
 module.exports.sendText = sendText;
 module.exports.getEvents = getEvents;
@@ -324,4 +347,5 @@ module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
 module.exports.fetchContacts = fetchContacts;
-module.exports.getAlbums = getAlbums;
+module.exports.getPhotos = getPhotos;
+module.exports.addPhotos = addPhotos;
