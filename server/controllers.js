@@ -2,6 +2,10 @@ const request = require('request');
 const db = require('../database/index');
 const dotenv = require('dotenv').config();
 const { google } = require('googleapis');
+const twilio = require('twilio');
+const authToken = process.env.TWILI_AUTH_TOKEN;
+const accountSID = process.env.TWILIO_ACCOUNT_SID;
+const client = new twilio(accountSID, authToken);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -23,7 +27,7 @@ const getEvents = async (token, callback) => {
     callback(body);
   });
 };
-
+// working text send
 
 const getContacts = async (token, callback) => {
   const options = {
@@ -277,6 +281,16 @@ const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback)
   });
 };
 
+const sendText = (currentUserId ,number) => {
+  client.messages.create({
+    body: `${currentUserId} has invited you to an event!`,
+    to: number,
+    from: '+18327803325'
+  })
+  .then((message) => { console.log(message.sid) })
+};
+
+module.exports.sendText = sendText;
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
 module.exports.addEvent = addEvent;
