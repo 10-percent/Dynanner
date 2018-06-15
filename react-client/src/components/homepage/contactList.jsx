@@ -34,7 +34,7 @@ class ContactList extends React.Component {
           <div className="col-lg-8">
           </div>
         </div>
-        <div className="list-group">
+        <div className="contact-list">
           {this.state.contacts.map((contact, i) => (
             <ContactEntry contact={contact} key={i} />
           ))}
