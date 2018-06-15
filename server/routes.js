@@ -141,8 +141,9 @@ router.get('/api/pastEvents', (req, res) => {
 
 router.post('/api/sendSMS', (req, res) => {
   const number = req.body.number;
+  const message = req.body.message;
   db.User.findOne({ googleId: req.user.googleId }, (err, user) => {
-    controller.sendText(user.name, number);
+    controller.sendText(user.name, number, message);
   });
   res.send('message sent');
 });
