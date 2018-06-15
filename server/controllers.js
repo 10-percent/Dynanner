@@ -2,6 +2,10 @@ const request = require('request');
 const db = require('../database/index');
 const dotenv = require('dotenv').config();
 const { google } = require('googleapis');
+const twilio = require('twilio');
+const authToken = process.env.TWILI_AUTH_TOKEN;
+const accountSID = process.env.TWILIO_ACCOUNT_SID;
+const client = new twilio(accountSID, authToken);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -21,6 +25,27 @@ const getEvents = async (token, callback) => {
   await request(options, (error, response, body) => {
     if (error) { console.log(`Error regarding GET request to google-calendar API: ${error}`); }
     callback(body);
+  });
+};
+// working text send
+
+const getContacts = async (token, callback) => {
+  const options = {
+    method: 'GET',
+    url: 'https://people.googleapis.com/v1/people/me/connections',
+    Accept: 'application/json',
+    qs: {
+      access_token: token,
+      personFields: 'names,phoneNumbers',
+      sortOrder: 'First_Name_Ascending',
+    },
+  };
+  await request(options, (error, response, body) => {
+    if (error) {
+      console.error(error);
+    } else {
+      callback(body);
+    }
   });
 };
 
@@ -88,6 +113,27 @@ const addEvent = async (id, event, callback) => {
       await user.save();
     }
     callback(user);
+  });
+};
+
+const addContact = async (id, person, callback) => {
+  const contactName = person.names[0].displayName;
+  const contactNumber = person.phoneNumbers[0].value;
+  await db.User.findOne({ googleId: id }, async (err, user) => {
+    const existingContact = user.contacts.reduce((doesExist, user) => {
+      if (user.name === contactName) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingContact) {
+      const newContact = new db.Contact({
+        name: contactName || '',
+        phone: contactNumber
+      });
+      user.contacts.push(newContact);
+      await user.save();
+    }
   });
 };
 
@@ -199,6 +245,17 @@ const fetchReview = (currentUserId, eventId, callback) => {
   });
 };
 
+const fetchContacts = (currentUserId, callback) => {
+  db.User.findOne({ googleId: currentUserId }, (error, user) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      const contacts = user.contacts;
+      callback(contacts);
+    }
+  });
+};
+
 const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback) => {
   oauth2Client.setCredentials({
     access_token: accesstoken,
@@ -224,17 +281,16 @@ const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback)
   });
 };
 
+const sendText = (currentUserId ,number) => {
+  client.messages.create({
+    body: `${currentUserId} has invited you to an event!`,
+    to: number,
+    from: '+18327803325'
+  })
+  .then((message) => { console.log(message.sid) })
+};
 
-
-
-// const uploadImage = (image, callback) => {
-  // const options = {
-    // method: 'POST',
-    // url: 'https://photoslibrary.googleapis.com/v1/uploads',
-    // 'Content-type': 'application/octet-stream'
-  // };
-// };
-
+module.exports.sendText = sendText;
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
 module.exports.addEvent = addEvent;
@@ -246,4 +302,7 @@ module.exports.fetchUpcomingEvents = fetchUpcomingEvents;
 module.exports.fetchPastEvents = fetchPastEvents;
 module.exports.fetchReview = fetchReview;
 module.exports.addEventToGoogleCal = addEventToGoogleCal;
+module.exports.getContacts = getContacts;
+module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
+module.exports.fetchContacts = fetchContacts;

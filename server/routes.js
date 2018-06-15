@@ -17,7 +17,7 @@ router.get(
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    // successRedirect: '/',
+    successRedirect: '/',
     failureRedirect: '/',
   }),
   async (req, res) => {
@@ -97,9 +97,9 @@ router.post('/api/saveSubscription', (req, res) => {
           },
         }));
       });
-  } else {
-    isValidSaveRequest(req, res);
   }
+  isValidSaveRequest(req, res);
+
 });
 
 router.get('/api/upcomingEvents', (req, res) => {
@@ -139,6 +139,14 @@ router.get('/api/pastEvents', (req, res) => {
   });
 });
 
+router.post('/api/sendSMS', (req, res) => {
+  const number = req.body.number;
+  db.User.findOne({ googleId: req.user.googleId }, (err, user) => {
+    controller.sendText(user.name, number);
+  });
+  res.send('message sent');
+});
+
 router.post('/api/addEvent', async (req, res) => {
   await controller.addEvent(req.user.googleId, req.body.event, () => {
     res.send();
@@ -147,7 +155,7 @@ router.post('/api/addEvent', async (req, res) => {
 
 router.post('/api/addEventToGoogleCal', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
+    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => { });
   });
   res.send();
 });
@@ -196,9 +204,18 @@ router.get('/api/getEmail', async (req, res) => {
 
 router.post('api/uploadImage', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
+    await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => { });
   });
-})
+});
+
+router.get('/api/getContacts', (req, res) => {
+  const currentUserId = req.user.googleId;
+  db.User.findOne({ googleId: currentUserId }, (err, user) => {
+    controller.fetchContacts(user.googleId, (data) => {
+      res.send(data);
+    });
+  });
+});
 
 
 module.exports = router;

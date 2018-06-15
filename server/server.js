@@ -13,7 +13,9 @@ const controller = require('./controllers');
 
 const app = express();
 const pathway = path.join(__dirname, '/../react-client/dist');
+const sw = path.join(__dirname, '/../react-client');
 app.use(express.static(pathway));
+app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
 app.use(bodyParser.json());
@@ -29,13 +31,15 @@ passport.deserializeUser((obj, done) => {
 });
 
 passport.use('google', new GoogleStrategy({
+  immediate: true,
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback',
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/photoslibrary.appendonly'],
+    'https://www.googleapis.com/auth/photoslibrary.appendonly',
+    'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
@@ -47,7 +51,7 @@ passport.use('google', new GoogleStrategy({
         refreshToken: refreshtoken,
         accessToken: accesstoken,
         googleId: profile.id,
-        email: profile.emails,
+        email: profile.emails[0].value,
         name: profile.displayName,
         firstName: profile.name.givenName,
       });
@@ -68,6 +72,18 @@ passport.use('google', new GoogleStrategy({
           date: event.start.dateTime,
         }, () => {});
       });
+    });
+    // get contacts from google people
+    await controller.getContacts(accesstoken, (people) => {
+      const contacts = JSON.parse(people).connections;
+      if (contacts === undefined) {
+        console.log('no contacts');
+      } else {
+        const contactList = contacts.map(contact => contact);
+        contactList.forEach(async (contact) => {
+          await controller.addContact(profile.id, contact);
+        }, () => {});
+      }
     });
     if (existingUser) {
       return done(null, existingUser);
