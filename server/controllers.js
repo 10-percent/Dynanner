@@ -292,8 +292,8 @@ const sendText = (currentUserId ,number) => {
 
 const getAlbums = (token, callback) => {
   const options = {
-    method: 'GET',
-    url: 'https://photoslibrary.googleapis.com/v1/albums',
+    method: 'POST',
+    url: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
     Accept: 'application/json',
     qs: {
       access_token: token,
