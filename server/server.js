@@ -86,12 +86,12 @@ passport.use('google', new GoogleStrategy({
       }
     });
 
-    await controller.getAlbums(accesstoken, (album) => {
-      const albums = JSON.parse(album);
-      if (!albums) {
-        console.log('No albums!');
+    await controller.getPhotos(accesstoken, (photo) => {
+      const photos = JSON.parse(photo);
+      if (!photos) {
+        console.log('No Photos!');
       } else {
-        console.log(albums, 'this is the albums');
+        controller.addPhotos(photos, profile.id);
       }
     });
 

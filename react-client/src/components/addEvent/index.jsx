@@ -19,14 +19,12 @@ class AddEvent extends React.Component {
       calSrc: '',
       events: [],
       redirect: false,
-      selectedFile: null,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getEmail = this.getEmail.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
 
   componentDidMount() {
@@ -98,15 +96,7 @@ class AddEvent extends React.Component {
   changeDate(date) {
     this.setState({ date });
   }
-
-  fileChangedHandler(event) {
-    this.setState({ selectedFile: event.target.files[0] });
-  }
-
-  uploadHandler() {
-    axios.post('api/uploadImage', this.state.selectedFile);
-  }
-
+  
   render() {
     const { redirect, calSrc } = this.state;
     return (
@@ -164,12 +154,7 @@ class AddEvent extends React.Component {
 
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
-          </div>
-
-          <div className="upload-image">
-            <input type="file" onChange={this.fileChangedHandler} />
-            <button onClick={this.uploadHandler}>Upload!</button>
-          </div>
+          </div>                  
 
         </div>
 
