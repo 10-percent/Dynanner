@@ -23,6 +23,7 @@ const ContactEntry = ({ contact }) => (
       <form
         className="message-form"
         onSubmit={(e) => {
+          e.preventDefault();
           console.log(e.target.message.value);
         newFunction(contact, e.target.message.value);
       }}
