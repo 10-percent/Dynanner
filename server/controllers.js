@@ -293,7 +293,7 @@ const sendText = (currentUserId ,number) => {
 const getAlbums = (token, callback) => {
   const options = {
     method: 'GET',
-    url: 'https://people.googleapis.com/v1/people/me/connections',
+    url: 'https://photoslibrary.googleapis.com/v1/albums',
     Accept: 'application/json',
     qs: {
       access_token: token,
