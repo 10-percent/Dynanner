@@ -4,7 +4,9 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
+import MyMapComponent from './map.js';
 import Axios from 'axios';
+
 
 class AddEvent extends React.Component {
   constructor(props) {
@@ -17,14 +19,12 @@ class AddEvent extends React.Component {
       calSrc: '',
       events: [],
       redirect: false,
-      selectedFile: null,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getEmail = this.getEmail.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
 
   componentDidMount() {
@@ -96,15 +96,7 @@ class AddEvent extends React.Component {
   changeDate(date) {
     this.setState({ date });
   }
-
-  fileChangedHandler(event) {
-    this.setState({selectedFile: event.target.files[0]})
-  }
-
-  uploadHandler() { 
-    axios.post('api/uploadImage', this.state.selectedFile)
-  }
-
+  
   render() {
     const { redirect, calSrc } = this.state;
     return (
@@ -136,7 +128,7 @@ class AddEvent extends React.Component {
                   placeholderText="Click to select date."
                   minDate={moment()}
                   maxDate={moment().add(100, 'years')}
-                  isClearable={true}
+                  isClearable
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
@@ -162,19 +154,20 @@ class AddEvent extends React.Component {
 
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
-          </div>
-          
-          <div className='upload-image'>
-          <input type="file" onChange={this.fileChangedHandler}></input>
-          <button onClick={this.uploadHandler}>Upload!</button>
-          </div>
+          </div>                  
 
         </div>
 
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
-
+        <MyMapComponent
+          isMarkerShown
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+          loadingElement={<div style={{ height: '100%' }} />}
+          containerElement={<div style={{ height: '400px' }} />}
+          mapElement={<div style={{ height: '100%' }} />}
+        />
       </div>
     );
   }

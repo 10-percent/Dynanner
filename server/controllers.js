@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const twilio = require('twilio');
 const authToken = process.env.TWILI_AUTH_TOKEN;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
-const client = new twilio(accountSID, authToken);
+const client = new twilio(process.env.accountSID, process.env.account_auth_token);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -281,13 +281,54 @@ const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback)
   });
 };
 
-const sendText = (currentUserId ,number) => {
+const sendText = (currentUserId, number, message) => {
   client.messages.create({
-    body: `${currentUserId} has invited you to an event!`,
+    body: `You got a message From ${currentUserId} about your next event!:\n ${message}`,
     to: number,
     from: '+18327803325'
   })
   .then((message) => { console.log(message.sid) })
+};
+
+const getPhotos = (token, callback) => {
+  const options = {
+    method: 'Post',
+    url: 'https://photoslibrary.googleapis.com/v1/mediaItems:search',
+    Accept: 'application/json',
+    qs: {
+      access_token: token,
+      pageSize: 10
+    },
+  };
+  request(options, (error, response, body) => {
+    if (error) {
+      console.error(error);
+    } else {
+      callback(body);
+    }
+  });
+}
+
+const addPhotos = (photos, id) => {
+  db.User.findOne({ googleId: id }, (err, user) => {
+    photos.mediaItems.forEach((photo) => {
+      const newPhoto = new db.Photo({
+        id: photo.baseUrl
+      });
+      user.photos.push(newPhoto);
+      user.save();
+    });
+  });
+}
+
+const fetchPhotos = (currentUserId, callback) => {
+  User.findOne({googleId: currentUserId}, (err, user) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, user.photos);
+    }
+  });
 };
 
 module.exports.sendText = sendText;
@@ -306,3 +347,5 @@ module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
 module.exports.fetchContacts = fetchContacts;
+module.exports.getPhotos = getPhotos;
+module.exports.addPhotos = addPhotos;

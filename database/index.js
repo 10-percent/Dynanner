@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
-const mongoURI = process.env.URI || 'mongodb://admin:admin1@ds159100.mlab.com:59100/dynanner';
+const mongoURI = process.env.URI;
 mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
@@ -31,6 +31,12 @@ const contactSchema = mongoose.Schema({
   usePushEach: true,
 });
 
+const photoSchema = mongoose.Schema({
+  id: String,
+}, {
+  usePushEach: true,
+})
+
 const userSchema = mongoose.Schema({
   googleId: { type: String, required: true, unique: true },
   accessToken: String,
@@ -41,6 +47,7 @@ const userSchema = mongoose.Schema({
   firstName: String,
   events: [eventSchema],
   contacts: [contactSchema],
+  photos: [photoSchema],
 }, {
   usePushEach: true,
 });
@@ -49,8 +56,10 @@ const User = mongoose.model('User', userSchema);
 const IEvent = mongoose.model('IEvent', eventSchema);
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 const Contact = mongoose.model('Contact', contactSchema);
+const Photo = mongoose.model('Photo', photoSchema);
 
 module.exports.User = User;
 module.exports.IEvent = IEvent;
 module.exports.Feedback = Feedback;
 module.exports.Contact = Contact;
+module.exports.Photo = Photo;

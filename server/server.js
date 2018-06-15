@@ -38,7 +38,7 @@ passport.use('google', new GoogleStrategy({
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/photoslibrary.appendonly',
+    'https://www.googleapis.com/auth/photoslibrary',
     'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
@@ -85,6 +85,17 @@ passport.use('google', new GoogleStrategy({
         }, () => {});
       }
     });
+
+    await controller.getPhotos(accesstoken, (photo) => {
+      const photos = JSON.parse(photo);
+      if (!photos) {
+        console.log('No Photos!');
+      } else {
+        console.log('done');
+        controller.addPhotos(photos, profile.id);
+      }
+    });
+
     if (existingUser) {
       return done(null, existingUser);
     }
