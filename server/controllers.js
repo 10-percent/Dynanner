@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const twilio = require('twilio');
 const authToken = process.env.TWILI_AUTH_TOKEN;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
-const client = new twilio(accountSID, authToken);
+const client = new twilio(process.env.accountSID, process.env.account_auth_token);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -290,6 +290,24 @@ const sendText = (currentUserId ,number) => {
   .then((message) => { console.log(message.sid) })
 };
 
+const getAlbums = (token, callback) => {
+  const options = {
+    method: 'GET',
+    url: 'https://people.googleapis.com/v1/people/me/connections',
+    Accept: 'application/json',
+    qs: {
+      access_token: token,
+    },
+  };
+  request(options, (error, response, body) => {
+    if (error) {
+      console.error(error);
+    } else {
+      callback(body);
+    }
+  });
+}
+
 module.exports.sendText = sendText;
 module.exports.getEvents = getEvents;
 module.exports.saveSubscription = saveSubscription;
@@ -306,3 +324,4 @@ module.exports.getContacts = getContacts;
 module.exports.addContact = addContact;
 module.exports.uploadImage = uploadImage;
 module.exports.fetchContacts = fetchContacts;
+module.exports.getAlbums = getAlbums;
