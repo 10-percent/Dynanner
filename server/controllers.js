@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const twilio = require('twilio');
 const authToken = process.env.TWILI_AUTH_TOKEN;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
-const client = new twilio(process.env.accountSID, process.env.account_auth_token);
+const client = new twilio(accountSID, authToken);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(

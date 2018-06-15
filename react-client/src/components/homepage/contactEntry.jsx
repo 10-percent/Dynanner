@@ -20,26 +20,31 @@ const ContactEntry = ({ contact }) => (
       <small className="date-row">{contact.phone}</small>
     </div>
     <Popup position="right center" className="mb-1" trigger={<a className="contact-button">{contact.name}</a>}>
-      <form
-        className="message-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log(e.target.message.value);
-        newFunction(contact, e.target.message.value);
-      }}
-      >
-        <label className="message-label">Message</label>
-        <input className="message-input" name="message" />
-        <button
-          className="send-message-button"
-          to={{
-            pathname: '/sendSMS',
-            state: { to: contact.phone },
-          }}
-          value={contact.phone}
-        >Send
+      {close => (
+        <form
+          className="message-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log(e.target.message.value);
+          newFunction(contact, e.target.message.value);
+          close();
+        }}
+        >
+          <label className="message-label">Message</label>
+          <input className="message-input" name="message" />
+          <button
+            position="right center"
+            closeOnDocumentClick
+            className="send-message-button"
+            to={{
+              pathname: '/sendSMS',
+              state: { to: contact.phone },
+            }}
+            value={contact.phone}
+          >Send
         </button>
       </form>
+      )};
     </Popup>
   </div>
 );
