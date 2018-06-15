@@ -7,6 +7,7 @@ import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
 
+
 class AddEvent extends React.Component {
   constructor(props) {
     super(props);
@@ -99,11 +100,11 @@ class AddEvent extends React.Component {
   }
 
   fileChangedHandler(event) {
-    this.setState({selectedFile: event.target.files[0]})
+    this.setState({ selectedFile: event.target.files[0] });
   }
 
-  uploadHandler() { 
-    axios.post('api/uploadImage', this.state.selectedFile)
+  uploadHandler() {
+    axios.post('api/uploadImage', this.state.selectedFile);
   }
 
   render() {
@@ -137,7 +138,7 @@ class AddEvent extends React.Component {
                   placeholderText="Click to select date."
                   minDate={moment()}
                   maxDate={moment().add(100, 'years')}
-                  isClearable={true}
+                  isClearable
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
@@ -164,10 +165,10 @@ class AddEvent extends React.Component {
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
           </div>
-          
-          <div className='upload-image'>
-          <input type="file" onChange={this.fileChangedHandler}></input>
-          <button onClick={this.uploadHandler}>Upload!</button>
+
+          <div className="upload-image">
+            <input type="file" onChange={this.fileChangedHandler} />
+            <button onClick={this.uploadHandler}>Upload!</button>
           </div>
 
         </div>
@@ -178,9 +179,9 @@ class AddEvent extends React.Component {
         <MyMapComponent
           isMarkerShown
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
+          loadingElement={<div style={{ height: '100%' }} />}
+          containerElement={<div style={{ height: '400px' }} />}
+          mapElement={<div style={{ height: '100%' }} />}
         />
       </div>
     );
