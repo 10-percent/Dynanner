@@ -177,7 +177,7 @@ class AddEvent extends React.Component {
         )}
         <MyMapComponent
           isMarkerShown
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQQsVx-ImrGxdiD81RmCp-BlghYZikEY0&callback=initMap"
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `400px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
