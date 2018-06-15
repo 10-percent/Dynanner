@@ -102,23 +102,23 @@ router.get('/api/getCurrentUser', (req, res) => {
   
 // });
 
-// router.get('/api/upcomingEvents', (req, res) => {
-//   const currentUserId = req.user.googleId;
-//   // const currentUserId = req.query.googleId; // for testing in Postman
-//   controller.fetchUpcomingEvents(currentUserId, (error, events) => {
-//     if (error) {
-//       console.error(error);
-//     } else {
-//       const chronological = events.sort((a, b) => {
-//         const dateA = moment(a.date).unix();
-//         const dateB = moment(b.date).unix();
+router.get('/api/upcomingEvents', (req, res) => {
+  const currentUserId = req.user.googleId;
+  // const currentUserId = req.query.googleId; // for testing in Postman
+  controller.fetchUpcomingEvents(currentUserId, (error, events) => {
+    if (error) {
+      console.error(error);
+    } else {
+      const chronological = events.sort((a, b) => {
+        const dateA = moment(a.date).unix();
+        const dateB = moment(b.date).unix();
 
-//         return dateA - dateB;
-//       });
-//       res.send(chronological);
-//     }
-//   });
-// });
+        return dateA - dateB;
+      });
+      res.send(chronological);
+    }
+  });
+});
 
 router.get('/api/pastEvents', (req, res) => {
   const currentUserId = req.user.googleId;
