@@ -65,6 +65,7 @@ router.get('/api/getCurrentUser', (req, res) => {
   res.send(req.user.firstName);
 });
 
+<<<<<<< HEAD
 // router.post('/api/saveSubscription', (req, res) => {
 //   const isValidSaveRequest = (req, res) => {
 //     if (!req.body || !req.body.endpoint) {
@@ -101,6 +102,55 @@ router.get('/api/getCurrentUser', (req, res) => {
 //     isValidSaveRequest(req, res);
   
 // });
+=======
+router.post('/api/saveSubscription', (req, res) => {
+  const isValidSaveRequest = (req, res) => {
+    if (!req.body || !req.body.endpoint) {
+      res.status(400);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({
+        error: {
+          id: 'no-endpoint',
+          message: 'Subscription must have an endpoint.',
+        },
+      }));
+      return false;
+    }
+    return true;
+  };
+
+  if (isValidSaveRequest(req, res)) {
+    return controller.saveSubscription(req.body.subscription, req.user.googleId)
+      .then((newSubscription) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ data: { success: true } }));
+      })
+      .catch((err) => {
+        res.status(500);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+          error: {
+            id: 'unable-to-save-subscription',
+            message: 'The subscription was received but we were unable to save it to our database.',
+          },
+        }));
+      });
+  }
+  isValidSaveRequest(req, res);
+
+});
+
+router.get('/api/upcomingEvents', (req, res) => {
+  const currentUserId = req.user.googleId;
+  // const currentUserId = req.query.googleId; // for testing in Postman
+  controller.fetchUpcomingEvents(currentUserId, (error, events) => {
+    if (error) {
+      console.error(error);
+    } else {
+      const chronological = events.sort((a, b) => {
+        const dateA = moment(a.date).unix();
+        const dateB = moment(b.date).unix();
+>>>>>>> 3fb30f7c465299ecc12e45aea8dff585864bd29f
 
 // router.get('/api/upcomingEvents', (req, res) => {
 //   const currentUserId = req.user.googleId;
@@ -139,6 +189,14 @@ router.get('/api/pastEvents', (req, res) => {
   });
 });
 
+router.post('/api/sendSMS', (req, res) => {
+  const number = req.body.number;
+  db.User.findOne({ googleId: req.user.googleId }, (err, user) => {
+    controller.sendText(user.name, number);
+  });
+  res.send('message sent');
+});
+
 router.post('/api/addEvent', async (req, res) => {
   await controller.addEvent(req.user.googleId, req.body.event, () => {
     res.send();
@@ -147,7 +205,7 @@ router.post('/api/addEvent', async (req, res) => {
 
 router.post('/api/addEventToGoogleCal', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
+    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => { });
   });
   res.send();
 });
@@ -196,7 +254,7 @@ router.get('/api/getEmail', async (req, res) => {
 
 router.post('api/uploadImage', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => {});
+    await controller.uploadImage(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => { });
   });
 });
 

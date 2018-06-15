@@ -51,7 +51,7 @@ passport.use('google', new GoogleStrategy({
         refreshToken: refreshtoken,
         accessToken: accesstoken,
         googleId: profile.id,
-        email: profile.emails,
+        email: profile.emails[0].value,
         name: profile.displayName,
         firstName: profile.name.givenName,
       });
