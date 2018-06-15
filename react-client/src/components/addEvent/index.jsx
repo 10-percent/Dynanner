@@ -7,6 +7,7 @@ import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
 
+
 class AddEvent extends React.Component {
   constructor(props) {
     super(props);
@@ -127,7 +128,7 @@ class AddEvent extends React.Component {
                   placeholderText="Click to select date."
                   minDate={moment()}
                   maxDate={moment().add(100, 'years')}
-                  isClearable={true}
+                  isClearable
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
@@ -163,9 +164,9 @@ class AddEvent extends React.Component {
         <MyMapComponent
           isMarkerShown
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
+          loadingElement={<div style={{ height: '100%' }} />}
+          containerElement={<div style={{ height: '400px' }} />}
+          mapElement={<div style={{ height: '100%' }} />}
         />
       </div>
     );
