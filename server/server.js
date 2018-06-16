@@ -81,6 +81,7 @@ passport.use('google', new GoogleStrategy({
       } else {
         const contactList = contacts.map(contact => contact);
         contactList.forEach(async (contact) => {
+          console.log(contact);
           await controller.addContact(profile.id, contact);
         }, () => {});
       }
@@ -88,10 +89,13 @@ passport.use('google', new GoogleStrategy({
 
     await controller.getPhotos(accesstoken, (photo) => {
       const photos = JSON.parse(photo);
-      if (!photos) {
+      if (photos.mediaItems.length < 1) {
         console.log('No Photos!');
       } else {
-        controller.addPhotos(photos, profile.id);
+        const photoList = photos.mediaItems.map(photo => photo)
+        photoList.forEach(async (photo) => {
+          await controller.addContact(photo, profile.id)
+        })
       }
     });
 
