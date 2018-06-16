@@ -322,7 +322,7 @@ const addPhotos = async (photos, id) => {
     if (!existingPhoto) {
       const newPhoto = new db.Photo({
         id: photoId || '',
-        baseUrl: base
+        src: base
       });
       user.photos.push(newPhoto);
       await user.save();
@@ -331,7 +331,7 @@ const addPhotos = async (photos, id) => {
 };
 
 const fetchPhotos = (currentUserId, callback) => {
-  db.User.findOne({ googleId: id }, async (err, user) => {
+  db.User.findOne({ googleId: currentUserId }, async (err, user) => {
     if(err) {
       callback(err);
     } else {
@@ -358,3 +358,4 @@ module.exports.uploadImage = uploadImage;
 module.exports.fetchContacts = fetchContacts;
 module.exports.getPhotos = getPhotos;
 module.exports.addPhotos = addPhotos;
+module.exports.fetchPhotos = fetchPhotos;

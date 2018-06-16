@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
-import config from '../../../../config.json';
+import config from './../../../../config.json';
 
 
 class AddEvent extends React.Component{

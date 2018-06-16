@@ -202,9 +202,9 @@ router.get('/api/getEmail', async (req, res) => {
   });
 });
 
-router.get('api/getImages', async (req, res) => {
+router.get('/api/getImages', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.fetchImage(user.googleId, (data) => {
+    await controller.fetchPhotos(user.googleId, (data) => {
       res.send(data);
     });
   });
