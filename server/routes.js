@@ -202,7 +202,7 @@ router.get('/api/getEmail', async (req, res) => {
   });
 });
 
-router.post('api/getImages', async (req, res) => {
+router.get('api/getImages', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
     await controller.fetchImage(user.googleId, (data) => {
       res.send(data);
