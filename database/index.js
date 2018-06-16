@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
-const mongoURI = process.env.URI;
+const mongoURI = process.env.mongoURI;
 mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
@@ -32,6 +32,7 @@ const contactSchema = mongoose.Schema({
 });
 
 const photoSchema = mongoose.Schema({
+  baseUrl: String,
   id: String,
 }, {
   usePushEach: true,
