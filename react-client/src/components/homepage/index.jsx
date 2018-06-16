@@ -117,9 +117,12 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
-        <div>
-          <PhotoGallery />
+        <div className="row justify-content-center">
+          <div className='col-lg-4 white-container'>
+          <h3>Pictures from Past Events</h3>
+          </div>
         </div>
+          <PhotoGallery />
       </div>
     );
   }
