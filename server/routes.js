@@ -65,41 +65,41 @@ router.get('/api/getCurrentUser', (req, res) => {
   res.send(req.user.firstName);
 });
 
-router.post('/api/saveSubscription', (req, res) => {
-  const isValidSaveRequest = (req, res) => {
-    if (!req.body || !req.body.endpoint) {
-      res.status(400);
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({
-        error: {
-          id: 'no-endpoint',
-          message: 'Subscription must have an endpoint.',
-        },
-      }));
-      return false;
-    }
-    return true;
-  };
+// router.post('/api/saveSubscription', (req, res) => {
+// const isValidSaveRequest = (req, res) => {
+//     if (!req.body || !req.body.endpoint) {
+//       res.status(400);
+//       res.setHeader('Content-Type', 'application/json');
+//       res.send(JSON.stringify({
+//         error: {
+//           id: 'no-endpoint',
+//           message: 'Subscription must have an endpoint.',
+//         },
+//       }));
+//       return false;
+//     }
+//     return true;
+//   };
 
-  if (isValidSaveRequest(req, res)) {
-    return controller.saveSubscription(req.body.subscription, req.user.googleId)
-      .then((newSubscription) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({ data: { success: true } }));
-      })
-      .catch((err) => {
-        res.status(500);
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({
-          error: {
-            id: 'unable-to-save-subscription',
-            message: 'The subscription was received but we were unable to save it to our database.',
-          },
-        }));
-      });
-  } 
-    isValidSaveRequest(req, res);
-});
+//   if (isValidSaveRequest(req, res)) {
+//     return controller.saveSubscription(req.body.subscription, req.user.googleId)
+//       .then((newSubscription) => {
+//         res.setHeader('Content-Type', 'application/json');
+//         res.send(JSON.stringify({ data: { success: true } }));
+//       })
+//       .catch((err) => {
+//         res.status(500);
+//         res.setHeader('Content-Type', 'application/json');
+//         res.send(JSON.stringify({
+//           error: {
+//             id: 'unable-to-save-subscription',
+//             message: 'The subscription was received but we were unable to save it to our database.',
+//           },
+//         }));
+//       });
+//   } 
+//     isValidSaveRequest(req, res);
+// });
 
 router.get('/api/upcomingEvents', (req, res) => {
   const currentUserId = req.user.googleId;

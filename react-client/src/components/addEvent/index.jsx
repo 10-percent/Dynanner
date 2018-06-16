@@ -6,10 +6,14 @@ import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
+<<<<<<< HEAD
+import config from '../../../../.config.json';
+=======
 import config from './../../../../config.json';
+>>>>>>> 1e616f1a4311328dcc4683059bda9b6119d23472
 
 
-class AddEvent extends React.Component {
+class AddEvent extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +31,7 @@ class AddEvent extends React.Component {
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
   }
-
+  // small change
   componentDidMount() {
     this.getEmail();
     this.getPastEvents();
@@ -98,7 +102,7 @@ class AddEvent extends React.Component {
   changeDate(date) {
     this.setState({ date });
   }
-  
+
   render() {
     const { redirect, calSrc } = this.state;
     return (
@@ -156,13 +160,18 @@ class AddEvent extends React.Component {
 
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
-          </div>                  
+          </div>
 
         </div>
 
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
+        <div className="search-event">
+          <h4 >Search for Your Event</h4>
+          <input className="geo-input" />
+          <button className="btn btn-outline-info">Search</button>
+        </div>
         <MyMapComponent
           isMarkerShown
           googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsAPI}&callback=initMap`}
