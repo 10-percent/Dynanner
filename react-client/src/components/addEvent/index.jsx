@@ -6,9 +6,10 @@ import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
+import config from '../../../../.config.json';
 
 
-class AddEvent extends React.Component {
+class AddEvent extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -96,7 +97,7 @@ class AddEvent extends React.Component {
   changeDate(date) {
     this.setState({ date });
   }
-  
+
   render() {
     const { redirect, calSrc } = this.state;
     return (
@@ -154,16 +155,21 @@ class AddEvent extends React.Component {
 
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
-          </div>                  
+          </div>
 
         </div>
 
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
+        <div className="search-event">
+          <h4 >Search for Your Event</h4>
+          <input className="geo-input" />
+          <button className="btn btn-outline-info">Search</button>
+        </div>
         <MyMapComponent
           isMarkerShown
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApi}&callback=initMap`}
           loadingElement={<div style={{ height: '100%' }} />}
           containerElement={<div style={{ height: '400px' }} />}
           mapElement={<div style={{ height: '100%' }} />}
