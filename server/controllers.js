@@ -331,7 +331,12 @@ const addPhotos = async (photos, id) => {
 };
 
 const fetchPhotos = (currentUserId, callback) => {
-    db.User.findOne({ googleId: id }, async (err, user) => {
+  db.User.findOne({ googleId: id }, async (err, user) => {
+    if(err) {
+      callback(err);
+    } else {
+      callback(user.photos);
+    }
   });
 };
 
