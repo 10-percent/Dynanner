@@ -307,31 +307,31 @@ const getPhotos = (token, callback) => {
       callback(body);
     }
   });
-}
+};
 
-const addPhotos = (photos, id) => {
-  db.User.findOne({ googleId: id }, (err, user) => {
-    if (!photos.mediaItems) {
-      console.log('No Media Items');
-    } else {
-      photos.mediaItems.forEach((photo) => {
-        const newPhoto = new db.Photo({
-          id: photo.baseUrl
-        });
-        user.photos.push(newPhoto);
-        user.save();
+const addPhotos = async (photos, id) => {
+  const photoId = photos.id;
+  const base = photos.baseUrl;
+  await db.User.findOne({ googleId: id }, async (err, user) => {
+    const existingPhoto = user.photos.reduce((doesExist, photo) => {
+      if (photo.id === photoId) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingPhoto) {
+      const newPhoto = new db.Photo({
+        id: photoId || '',
+        baseUrl: base
       });
+      user.photos.push(newPhoto);
+      await user.save();
     }
   });
 };
 
 const fetchPhotos = (currentUserId, callback) => {
-  User.findOne({googleId: currentUserId}, (err, user) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, user.photos);
-    }
+    db.User.findOne({ googleId: id }, async (err, user) => {
   });
 };
 
