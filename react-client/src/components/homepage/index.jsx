@@ -10,7 +10,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: '',
+      currentUser: ''
     };
     this.urlB64ToUint8Array = this.urlB64ToUint8Array.bind(this);
     this.handleSWRegistration = this.handleSWRegistration.bind(this);
@@ -25,7 +25,6 @@ class Home extends React.Component {
       .catch((error) => {
         console.error('error getting current user', error);
       });
-
     Notification.requestPermission().then((status) => {
       if (status === 'denied') {
         console.log('The user has blocked notifications.');
@@ -118,9 +117,12 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
-        <div>
-          <PhotoGallery />
+        <div className="row justify-content-center">
+          <div className='col-lg-4 white-container'>
+          <h3>Pictures from Past Events</h3>
+          </div>
         </div>
+          <PhotoGallery />
       </div>
     );
   }

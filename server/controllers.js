@@ -307,30 +307,35 @@ const getPhotos = (token, callback) => {
       callback(body);
     }
   });
-}
+};
 
-const addPhotos = (photos, id) => {
-  db.User.findOne({ googleId: id }, (err, user) => {
-    if (!photos.mediaItems) {
-      console.log('No Media Items');
-    } else {
-      photos.mediaItems.forEach((photo) => {
-        const newPhoto = new db.Photo({
-          id: photo.baseUrl
-        });
-        user.photos.push(newPhoto);
-        user.save();
+const addPhotos = async (photos, id) => {
+  const photoId = photos.id;
+  const base = photos.baseUrl;
+  await db.User.findOne({ googleId: id }, async (err, user) => {
+    const existingPhoto = user.photos.reduce((doesExist, photo) => {
+      if (photo.id === photoId) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingPhoto) {
+      const newPhoto = new db.Photo({
+        id: photoId || '',
+        src: base
       });
+      user.photos.push(newPhoto);
+      await user.save();
     }
   });
 };
 
 const fetchPhotos = (currentUserId, callback) => {
-  User.findOne({googleId: currentUserId}, (err, user) => {
-    if (err) {
-      callback(err, null);
+  db.User.findOne({ googleId: currentUserId }, async (err, user) => {
+    if(err) {
+      callback(err);
     } else {
-      callback(null, user.photos);
+      callback(user.photos);
     }
   });
 };
@@ -353,3 +358,4 @@ module.exports.uploadImage = uploadImage;
 module.exports.fetchContacts = fetchContacts;
 module.exports.getPhotos = getPhotos;
 module.exports.addPhotos = addPhotos;
+module.exports.fetchPhotos = fetchPhotos;
