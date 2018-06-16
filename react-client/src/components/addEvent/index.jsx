@@ -6,14 +6,10 @@ import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
-<<<<<<< HEAD
-import config from '../../../../.config.json';
-=======
 import config from './../../../../config.json';
->>>>>>> 1e616f1a4311328dcc4683059bda9b6119d23472
 
 
-class AddEvent extends React.Component{
+class AddEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -168,7 +164,7 @@ class AddEvent extends React.Component{
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
         <div className="search-event">
-          <h4 >Search for Your Event</h4>
+          <h4 >Search for Your Event Address</h4>
           <input className="geo-input" />
           <button className="btn btn-outline-info">Search</button>
         </div>
