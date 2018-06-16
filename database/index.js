@@ -32,7 +32,7 @@ const contactSchema = mongoose.Schema({
 });
 
 const photoSchema = mongoose.Schema({
-  baseUrl: String,
+  src: String,
   id: String,
 }, {
   usePushEach: true,
