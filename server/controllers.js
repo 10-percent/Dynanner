@@ -312,23 +312,22 @@ const getPhotos = (token, callback) => {
 const addPhotos = async (photos, id) => {
   const photoId = photos.id;
   const base = photos.baseUrl;
-  console.log(photoId);
-  // await db.User.findOne({ googleId: id }, async (err, user) => {
-  //   const existingPhoto = user.photos.reduce((doesExist, photo) => {
-  //     if (photo.id === photoId) {
-  //       doesExist = true;
-  //     }
-  //     return doesExist;
-  //   }, false);
-  //   if (!existingPhoto) {
-  //     const newPhoto = new db.Photo({
-  //       id: photoId || '',
-  //       baseUrl: base
-  //     });
-  //     user.photos.push(newPhoto);
-  //     await user.save();
-  //   }
-  // });
+  await db.User.findOne({ googleId: id }, async (err, user) => {
+    const existingPhoto = user.photos.reduce((doesExist, photo) => {
+      if (photo.id === photoId) {
+        doesExist = true;
+      }
+      return doesExist;
+    }, false);
+    if (!existingPhoto) {
+      const newPhoto = new db.Photo({
+        id: photoId || '',
+        baseUrl: base
+      });
+      user.photos.push(newPhoto);
+      await user.save();
+    }
+  });
 };
 
 const fetchPhotos = (currentUserId, callback) => {
