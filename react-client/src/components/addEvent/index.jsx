@@ -97,7 +97,7 @@ class AddEvent extends React.Component {
   changeDate(date) {
     this.setState({ date });
   }
-  
+
   render() {
     const { redirect, calSrc } = this.state;
     return (
@@ -155,7 +155,7 @@ class AddEvent extends React.Component {
 
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
-          </div>                  
+          </div>
 
         </div>
 
