@@ -81,6 +81,7 @@ class AddEvent extends React.Component {
       .then(() => {
         // trigger redirect to '/pastEvents'
         this.setState({ redirect: true });
+        // this is a change
       })
       .catch((error) => {
         console.log(`Error from axios post addEvent: ${error}`);
