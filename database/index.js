@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
-const mongoURI = 'mongodb://admin:admin1@ds257640.mlab.com:57640/dynannerlegacy';
+const mongoURI = process.env.mongoURI;
 mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
