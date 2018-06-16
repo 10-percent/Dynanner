@@ -9,7 +9,7 @@ import Axios from 'axios';
 import config from '../../../../.config.json';
 
 
-class AddEvent extends React.Component {
+class AddEvent extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
