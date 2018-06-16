@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const twilio = require('twilio');
 const authToken = process.env.TWILI_AUTH_TOKEN;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
-const client = new twilio(process.env.accountSID, process.env.account_auth_token);
+const client = new twilio(accountSID, authToken);
 
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -311,15 +311,19 @@ const getPhotos = (token, callback) => {
 
 const addPhotos = (photos, id) => {
   db.User.findOne({ googleId: id }, (err, user) => {
-    photos.mediaItems.forEach((photo) => {
-      const newPhoto = new db.Photo({
-        id: photo.baseUrl
+    if (!photos.mediaItems) {
+      console.log('No Media Items');
+    } else {
+      photos.mediaItems.forEach((photo) => {
+        const newPhoto = new db.Photo({
+          id: photo.baseUrl
+        });
+        user.photos.push(newPhoto);
+        user.save();
       });
-      user.photos.push(newPhoto);
-      user.save();
-    });
+    }
   });
-}
+};
 
 const fetchPhotos = (currentUserId, callback) => {
   User.findOne({googleId: currentUserId}, (err, user) => {
