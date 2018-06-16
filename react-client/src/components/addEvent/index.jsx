@@ -6,7 +6,11 @@ import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
 import Axios from 'axios';
+<<<<<<< HEAD
 import config from '../../../../.config.json';
+=======
+import config from './../../../../config.json';
+>>>>>>> 1e616f1a4311328dcc4683059bda9b6119d23472
 
 
 class AddEvent extends React.Component{
@@ -81,6 +85,7 @@ class AddEvent extends React.Component{
       .then(() => {
         // trigger redirect to '/pastEvents'
         this.setState({ redirect: true });
+        // this is a change
       })
       .catch((error) => {
         console.log(`Error from axios post addEvent: ${error}`);
@@ -169,7 +174,7 @@ class AddEvent extends React.Component{
         </div>
         <MyMapComponent
           isMarkerShown
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApi}&callback=initMap`}
+          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsAPI}&callback=initMap`}
           loadingElement={<div style={{ height: '100%' }} />}
           containerElement={<div style={{ height: '400px' }} />}
           mapElement={<div style={{ height: '100%' }} />}

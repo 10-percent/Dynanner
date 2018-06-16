@@ -8,3 +8,4 @@ dist
 .env
 .config.json
 .vscode/
+config.json

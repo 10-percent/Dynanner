@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import webPush from 'web-push';
 import UpcomingEvents from './upcomingEvents.jsx';
 import ContactList from './contactList.jsx';
+import PhotoGallery from './photos.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -116,6 +117,9 @@ class Home extends React.Component {
               <ContactList />
             </div>
           </div>
+        </div>
+        <div>
+          <PhotoGallery />
         </div>
       </div>
     );

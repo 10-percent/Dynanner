@@ -1,0 +1,23 @@
+import Gallery from 'react-photo-gallery';
+import React from 'react';
+import { defaultCipherList } from 'constants';
+
+export default class PhotoGallery extends React.Component {
+  render() {
+    return (
+      <Gallery photos={PHOTO_SET} />
+    );
+  }
+}
+const PHOTO_SET = [
+  {
+    src: 'https://lh3.googleusercontent.com/photos-library/AJZSZuzAfSsIoCpzaZwevABTzjoeLBSWV66moDo24hAngyWPdfKObKAbW89o3ShyPGodxUNashaxBqDYiAIi4K_fbDKD1V__ZBPCLxrtNdi1qftT9SN5Y35s0GrKnhZws6jBDyG10IAnBQPB-lQUN6x7yXJ_32F8-fc3LOIEqoefUYgtDp6UCybIwz9bVCY2b2u6vkub4dFUV20nmyJM-63CkosjBviEFLYX8DFxSXAFm2DVGoFAZAEti-wqyxJqVpVvenszgqxlw5i-wJUKQH3-2yNtNPiGys0u8rt9YFBgAWBomOv3Ms0esDeGXVPVyaUwQNYB62oSqw-03FYEMQgrvtOoUd5k_oVb4CAA5MjMAY1XoMfV5eRTCZ1E2dvSfqs_kqyVHM7Td12wMglbwUi7SbggFgqBxv0Qn0lgwFSPRRKW7Jwxc23ETAVx7pNoGWHXW8WZaH_TsamNTRugtJoDRuKVq2ze5TOoeaCnWcDKuuc8umcQ0UWZhmihNjDRCckgsGc1BHQ-yktOrKEwryMgn3CTrJM-roSUS3ssrKBpWG7R9TV3rRHuxCJ4tF6FoNY_sXQjkCdyWfZ1BI2aWxPZH3Rr-4jK2i2noL7hPz66CFQyGyYQsv3ilC_kD7FV-xbzfTlK8u0aJodeW4csPtUelrt3tII8p52dseUBgyRY05udaPP0gBzGdDih3NlZ0a8wHjgZtsCQ8HX8elqWCZbErA67jsBc3vicbtU8FJWzmxO39s9aP2Fi3dttfm-3oJUOJx7VP989Xwl7mrGuyAeCklgHcehmwGHplxyXO6d_qWayPd1ZW99budR5NryR4t6NMLax66gmPAC0tMDITQ',
+    width: 4,
+    height: 3
+  },
+  {
+    src: 'https://lh3.googleusercontent.com/photos-library/AJZSZuxNQKZMgKf0MN4TH4zi1OvwgdNvmb901NNSwDcZhIdivl8A9ZqDyNlPqeEYzGDGf_znov4kB18G_aUEPus1Jl-UlvqYreZNxzgDkYCv7XL-0NWgTrqOMU2TdChRVOF44eVKuVLpaj4Mz-xzQsDFr_9xI2OKqq5ZI6YNSOUYU6jAW9hA3s8esKfOzks4jZ62FgWkKwtiGRX4DzAo11CLkk9zui6mcHKfC8MjfRgS59k0KAuBdmiVvDTj13NuDf909dhAnH8U2qg6Sf99MtlO3vjM_jcNOvNvsuhXM2mrmiaXtv48esW6mvl_h_-bJtq1YbdPcMeNOgTkI3PUSeTAwqvVeYKiCo-RLY0kHvPAqNo5GUxOmHQcY05VFgl1NNO4XcwkiHTLsWcn69c_2fNTpYrEuf6m8tkfo1UqN26HdmWJqVR36RAISUJ8Oy8bxsKeZGTm9CjJu97KPkDan0HtFLPRmAqlJGQEVKY_vpMnJoNdG-s14QdyPhhx5vV3Odocua2uP4GStL9PwxkNUpGzthUzwxoqgHBpGVVfGO963tFsQedzviVYhCaeBcg7jBiw3By3vS6sPvqPSt8gTi2i_v7MyDmG4spit7lR8HQqy-SNGuFF1wWeWsmQuOKXe8frHIb2Nt3hDhUTeN94z-iLyBF7nIaIfwCcVMsN82W9cMD5P9rviWvZEVd1httwxGYft1q4MIcPSPSgub6fljEQHeI4PNbVwRJPwtLw-khC-HMtmwu5yc7seCa_bSC6zFv1xBH2IwBKoOsBQ__v81mP5XqAKIOpcZFop5aqRAi-jy52e0HgI1d7saoGG3djANCgVcd3PUcZ8r2IZxTOqw',
+    width: 1,
+    height: 1
+  }
+];
