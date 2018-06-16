@@ -10,8 +10,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: '',
-      photos: {}
+      currentUser: ''
     };
     this.urlB64ToUint8Array = this.urlB64ToUint8Array.bind(this);
     this.handleSWRegistration = this.handleSWRegistration.bind(this);
@@ -22,16 +21,6 @@ class Home extends React.Component {
     Axios.get('/api/getCurrentUser')
       .then((response) => {
         this.setState({ currentUser: response.data });
-      })
-      .catch((error) => {
-        console.error('error getting current user', error);
-      });
-
-    Axios.get('/api/getImages')
-      .then((response) => {
-        this.setState({ photos: response.data }, () => {
-          console.log(this.state, 'this is state of index');
-        });
       })
       .catch((error) => {
         console.error('error getting current user', error);

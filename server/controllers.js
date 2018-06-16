@@ -322,7 +322,7 @@ const addPhotos = async (photos, id) => {
     if (!existingPhoto) {
       const newPhoto = new db.Photo({
         id: photoId || '',
-        baseUrl: base
+        src: base
       });
       user.photos.push(newPhoto);
       await user.save();
