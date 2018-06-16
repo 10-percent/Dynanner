@@ -283,7 +283,7 @@ const uploadImage = async (refreshtoken, image, authCode, accesstoken, callback)
 
 const sendText = (currentUserId, number, message) => {
   client.messages.create({
-    body: `You got a message From ${currentUserId}about your next event!:\n ${message}`,
+    body: `You got a message From ${currentUserId} about your next event!:\n ${message}`,
     to: number,
     from: '+18327803325'
   })

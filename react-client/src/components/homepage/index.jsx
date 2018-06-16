@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import webPush from 'web-push';
 import UpcomingEvents from './upcomingEvents.jsx';
 import ContactList from './contactList.jsx';
+import PhotoGallery from './photos.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -37,11 +38,9 @@ class Home extends React.Component {
 
   initializeServiceWorker() {
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/serviceWorker.js')
-          .then(this.handleSWRegistration)
-          .then(this.saveSubscription);
-      });
+      navigator.serviceWorker.register('/serviceWorker.js')
+        .then(this.handleSWRegistration)
+        .then(this.saveSubscription);
     } else {
       console.log('Service workers aren\'t supported in this browser.');
     }
@@ -118,6 +117,9 @@ class Home extends React.Component {
               <ContactList />
             </div>
           </div>
+        </div>
+        <div>
+          <PhotoGallery />
         </div>
       </div>
     );
