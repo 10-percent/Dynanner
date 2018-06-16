@@ -26,6 +26,13 @@ class Home extends React.Component {
         console.error('error getting current user', error);
       });
 
+    Axios.get('/api/getCurrentUser')
+      .then((response) => {
+        this.setState({ currentUser: response.data });
+      })
+      .catch((error) => {
+        console.error('error getting current user', error);
+      });
     Notification.requestPermission().then((status) => {
       if (status === 'denied') {
         console.log('The user has blocked notifications.');
