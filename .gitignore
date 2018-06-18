@@ -6,6 +6,6 @@ build/
 bundle.js
 dist
 .env
-.config.json
+config.json
 .vscode/
 config.json
