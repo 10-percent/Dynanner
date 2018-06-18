@@ -88,7 +88,7 @@ passport.use('google', new GoogleStrategy({
 
     await controller.getPhotos(accesstoken, (photo) => {
       const photos = JSON.parse(photo);
-      if (photos.mediaItems.length < 1) {
+      if (!photos.mediaItems) {
         console.log('No Photos!');
       } else {
         const photoList = photos.mediaItems.map(photo => photo)
