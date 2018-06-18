@@ -297,7 +297,6 @@ const getPhotos = (token, callback) => {
     Accept: 'application/json',
     qs: {
       access_token: token,
-      pageSize: 10
     },
   };
   request(options, (error, response, body) => {
