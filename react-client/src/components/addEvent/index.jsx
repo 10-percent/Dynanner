@@ -9,7 +9,7 @@ import Axios from 'axios';
 import config from './../../../../config.json';
 
 
-class AddEvent extends React.Component{
+class AddEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -163,11 +163,6 @@ class AddEvent extends React.Component{
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
-        <div className="search-event">
-          <h4 >Search for Your Event</h4>
-          <input className="geo-input" />
-          <button className="btn btn-outline-info">Search</button>
-        </div>
         <MyMapComponent
           isMarkerShown
           googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsAPI}&callback=initMap`}
