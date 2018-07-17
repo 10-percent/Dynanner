@@ -135,13 +135,49 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1em;
 }
 
-.past-event-entry {
+.contact-button {
   background-color: none!important;
   border-left: none;
   border-right: none;
 }
 
+.contact-list {
+  height: 400px;
+  overflow: auto;
+}
+
+.send-message-button {
+  border-color: lightblue;
+  background-color: white;
+  text-decoration: bold;
+}
+
+.message-form {
+  display: inline;;
+  float: left
+}
+
+.message-input {
+  margin-bottom: 4px;
+}
+
+.message-label {
+  font-size: 18px
+}
+
 /* past events page */
+.pics {
+  background-color: rgba(255, 255, 255, 0.8);
+  margin-top: 8px;
+};
+.search-event {
+  background-color:  rgba(255, 255, 255, 0.8)
+}
+
+.geo-input {
+  background-color:  rgba(255, 255, 255, 0.8);
+  width: 200px!important
+}
 
 #current-review {
   background-color: rgba(255, 255, 255, 0.8);  

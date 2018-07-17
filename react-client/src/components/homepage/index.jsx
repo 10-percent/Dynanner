@@ -2,16 +2,19 @@ import React from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import webPush from 'web-push';
-import serviceWorker from '../../../serviceWorker';
 import UpcomingEvents from './upcomingEvents.jsx';
-import PastEventsHome from './pastEvents.jsx';
+import ContactList from './contactList.jsx';
+import PhotoGallery from './photos.jsx';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: '',
+      currentUser: ''
     };
+    this.urlB64ToUint8Array = this.urlB64ToUint8Array.bind(this);
+    this.handleSWRegistration = this.handleSWRegistration.bind(this);
+    this.saveSubscription = this.saveSubscription.bind(this);
   }
 
   componentDidMount() {
@@ -22,7 +25,6 @@ class Home extends React.Component {
       .catch((error) => {
         console.error('error getting current user', error);
       });
-
     Notification.requestPermission().then((status) => {
       if (status === 'denied') {
         console.log('The user has blocked notifications.');
@@ -35,7 +37,7 @@ class Home extends React.Component {
 
   initializeServiceWorker() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(serviceWorker)
+      navigator.serviceWorker.register('/serviceWorker.js')
         .then(this.handleSWRegistration)
         .then(this.saveSubscription);
     } else {
@@ -43,6 +45,18 @@ class Home extends React.Component {
     }
   }
 
+  urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (var i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
   handleSWRegistration(reg) {
     if (reg.installing) {
       console.log('Service worker installing.');
@@ -52,16 +66,18 @@ class Home extends React.Component {
       console.log('Service worker active.');
     }
 
-    swRegistration = reg;
-    initializeState(reg);
+    // const swRegistration = reg;
+    this.saveSubscription(reg);
   }
 
   saveSubscription(reg) {
     let subscribeParams = { userVisibleOnly: true };
     const applicationServerKey = this.urlB64ToUint8Array('BBnaIXuSqE8E-boIMUcAYj6RkLHNCJH59KjhDZrwwB-8CzcaBSjSod5RCB1mqw1hiC3lQVJmHSCfnrH8HKvWhbA');
     subscribeParams.applicationServerKey = applicationServerKey;
-
-    reg.pushManager.subscribe(subscribeParams)
+    console.log(reg);
+    const currentPushManager = reg.pushManager
+    console.log(currentPushManager);
+    currentPushManager.subscribe(subscribeParams)
       .then((subscription) => {
         this.setState({ isSubscribed: true });
         Axios.post('/api/saveSubscription', { subscription })
@@ -74,18 +90,6 @@ class Home extends React.Component {
       });
   }
 
-  urlB64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (var i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  }
 
   render() {
     const { currentUser } = this.state;
@@ -109,10 +113,16 @@ class Home extends React.Component {
               <UpcomingEvents />
             </div>
             <div className="col-lg-4 white-container" id="past-logs-home">
-              <PastEventsHome />
+              <ContactList />
             </div>
           </div>
         </div>
+        <div className="row justify-content-center">
+          <div className='col-lg-4 white-container'>
+          <h3 className="pics">Pictures from Past Events</h3>
+          </div>
+        </div>
+          <PhotoGallery />
       </div>
     );
   }

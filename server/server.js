@@ -13,7 +13,9 @@ const controller = require('./controllers');
 
 const app = express();
 const pathway = path.join(__dirname, '/../react-client/dist');
+const sw = path.join(__dirname, '/../react-client');
 app.use(express.static(pathway));
+app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
 app.use(bodyParser.json());
@@ -29,12 +31,15 @@ passport.deserializeUser((obj, done) => {
 });
 
 passport.use('google', new GoogleStrategy({
+  immediate: true,
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback',
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read',
-    'https://www.googleapis.com/auth/calendar'],
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/photoslibrary',
+    'https://www.googleapis.com/auth/contacts'],
 }, async (accesstoken, refreshtoken, params, profile, done) => {
   try {
     // check whether current user exists in db
@@ -68,6 +73,32 @@ passport.use('google', new GoogleStrategy({
         }, () => {});
       });
     });
+    // get contacts from google people
+    await controller.getContacts(accesstoken, (people) => {
+      const contacts = JSON.parse(people).connections;
+      if (!contacts) {
+        console.log('no contacts');
+      } else {
+        const contactList = contacts.map(contact => contact);
+        contactList.forEach(async (contact) => {
+          await controller.addContact(profile.id, contact);
+        }, () => {});
+      }
+    });
+
+    await controller.getPhotos(accesstoken, (photo) => {
+      const photos = JSON.parse(photo);
+      if (!photos.mediaItems) {
+        console.log('No Photos!');
+      } else {
+        console.log(photos.mediaItems);
+        const photoList = photos.mediaItems.map(photo => photo)
+        photoList.forEach(async (photo) => {
+          await controller.addPhotos(photo, profile.id)
+        })
+      }
+    });
+
     if (existingUser) {
       return done(null, existingUser);
     }
@@ -77,16 +108,16 @@ passport.use('google', new GoogleStrategy({
   }
 }));
 
-const vapidKeys = {
-  publicKey: process.env.VAPID_PUBLIC_KEY,
-  privateKey: process.env.VAPID_PRIVATE_KEY,
-};
+// const vapidKeys = {
+//   publicKey: process.env.VAPID_PUBLIC_KEY,
+//   privateKey: process.env.VAPID_PRIVATE_KEY,
+// };
 
-webPush.setVapidDetails(
-  'mailto:emilyyu518@gmail.com',
-  vapidKeys.publicKey,
-  vapidKeys.privateKey,
-);
+// webPush.setVapidDetails(
+//   'mailto:emilyyu518@gmail.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey,
+// );
 
 app.use('/', routes);
 
