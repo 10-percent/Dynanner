@@ -5,6 +5,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.js';
+import AttendeeEntry from './attendee-entry.jsx';
 import Axios from 'axios';
 import config from './../../../../config.json';
 
@@ -19,6 +20,8 @@ class AddEvent extends React.Component {
       description: 'just do it',
       calSrc: '',
       events: [],
+      attendee: '',
+      attendees: [],
       redirect: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,6 +29,8 @@ class AddEvent extends React.Component {
     this.getEmail = this.getEmail.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
+    this.addToAttendees = this.addToAttendees.bind(this);
+    this.removeAttendee = this.removeAttendee.bind(this);
   }
   // small change
   componentDidMount() {
@@ -66,6 +71,7 @@ class AddEvent extends React.Component {
         title: this.state.title,
         date: this.state.date.toISOString(true),
         description: this.state.description,
+        attendees: this.state.attendees,
       },
     })
       .then(() => {
@@ -75,6 +81,7 @@ class AddEvent extends React.Component {
             title: this.state.title,
             date: this.state.date,
             description: this.state.description,
+            attendees: this.state.attendees,
           },
         });
       })
@@ -97,6 +104,32 @@ class AddEvent extends React.Component {
 
   changeDate(date) {
     this.setState({ date });
+  }
+
+  addToAttendees() {
+    const attendee = this.state.attendee
+    this.state.attendee = {
+      email: attendee,
+      responseStatus: 'needsAction'
+    }
+    if (this.state.attendee === '' || !this.state.attendee.email.includes('@') || !this.state.attendee.email.includes('.com')) {
+      alert('Add people: must be an email')
+    } else {
+    this.state.attendees.push(this.state.attendee);
+    console.log(this.state.attendees);
+    this.setState({attendees: this.state.attendees});
+    this.state.attendee = '';
+    }
+  }
+
+  removeAttendee(email) {
+    const remainingAttendees = this.state.attendees.filter(attendee => {
+      if (attendee.email !== email) {
+        return attendee;
+      }
+    })
+    this.setState({attendees: remainingAttendees});
+    console.log(this.state.attendees);
   }
 
   render() {
@@ -145,6 +178,19 @@ class AddEvent extends React.Component {
               <div>
                 <h6>Description</h6>
                 <input className="form-control" type="text" onChange={this.handleChange} name="description" ref="description" />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div>
+                <h6>Add People with Email</h6>
+                <input className="form-control" type="text" onChange={this.handleChange} name="attendee" ref="attendee" value={this.state.attendee}/>
+                <button onClick={this.addToAttendees} className="addBtn">Add</button><br />
+                <div className="attendee-list">
+          {this.state.attendees.map((attendee, i) => (
+            <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={this.removeAttendee}/>
+          ))}
+        </div>
               </div>
             </div>
 
