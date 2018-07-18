@@ -43,6 +43,17 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
+.attendee {
+  list-style-type: none;
+  background-color: white;
+  font-size: 20px;
+}
+
+.attendee-button {
+  font-size: 20px;
+  float: right;
+}
+
 /* log in page */
 
 .jumbotron {
