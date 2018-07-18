@@ -4,7 +4,10 @@ import Axios from 'axios';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Login from './components/login/index.jsx';
-import Header from './header.jsx';
+import Home from './components/homepage/index.jsx';
+import AddEvent from './components/addEvent/index.jsx';
+import ReviewEvent from './components/reviewEvent/index.jsx';
+import PastEvents from './components/pastEvents/index.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -33,16 +36,20 @@ class App extends React.Component {
   render() {
     if (!this.state.isAuthenticated) {
       return <Login />;
-    } else if (this.state.isAuthenticated) {
-      return <Header />;
     }
     return (
-      <Switch>
-        <Route path="/" component={Header} />
-        <Route path="/login" component={Login} />
-      </Switch>
+      <Router>
+        <Switch>
+          {/* <Route path="/" component={Header} /> */}
+          <Route path="/login" component={Login} />
+          <Route exact path="/" component={Home} />
+          <Route path="/addEvent" component={AddEvent} />
+          <Route path="/pastEvents" component={PastEvents} />
+          <Route path="/reviewEvent" component={ReviewEvent} />
+        </Switch>
+      </Router>
     );
   }
 }
 
-ReactDOM.render((<Router><App /></Router>), document.getElementById('app'));
+ReactDOM.render((<App />), document.getElementById('app'));

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import webPush from 'web-push';
 import UpcomingEvents from './upcomingEvents.jsx';
 import ContactList from './contactList.jsx';
-import PhotoGallery from './photos.jsx';
+import Header from '../../header.jsx';
+import PastEventsHome from './pastEvents.jsx';
 
 class Home extends React.Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class Home extends React.Component {
 
 
   render() {
+    console.log(this.props);
     const { currentUser } = this.state;
     return (
       <div className="body">
@@ -110,19 +112,13 @@ class Home extends React.Component {
           </div>
           <div className="row row-eq-height justify-content-between">
             <div id="upcoming-col" className="col-lg-8">
-              <UpcomingEvents />
+              <UpcomingEvents location={this.props.history.location}/>
             </div>
             <div className="col-lg-4 white-container" id="past-logs-home">
-              <ContactList />
+              <PastEventsHome />
             </div>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className='col-lg-4 white-container'>
-          <h3 className="pics">Pictures from Past Events</h3>
-          </div>
-        </div>
-          <PhotoGallery />
       </div>
     );
   }
