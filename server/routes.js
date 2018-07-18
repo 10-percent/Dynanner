@@ -155,7 +155,9 @@ router.post('/api/addEvent', async (req, res) => {
 
 router.post('/api/addEventToGoogleCal', async (req, res) => {
   await db.User.findOne({ googleId: req.user.googleId }, async (err, user) => {
-    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, () => { });
+    await controller.addEventToGoogleCal(user.refreshToken, req.body.event, user.authCode, user.accessToken, (data, data2) => {
+      console.log(data, 'data', data2, 'data2');
+    });
   });
   res.send();
 });
