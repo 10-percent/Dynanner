@@ -116,7 +116,6 @@ class AddEvent extends React.Component {
       alert('Add people: must be an email')
     } else {
     this.state.attendees.push(this.state.attendee);
-    console.log(this.state.attendees);
     this.setState({attendees: this.state.attendees});
     this.state.attendee = '';
     }
@@ -129,7 +128,6 @@ class AddEvent extends React.Component {
       }
     })
     this.setState({attendees: remainingAttendees});
-    console.log(this.state.attendees);
   }
 
   render() {
