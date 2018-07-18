@@ -116,7 +116,6 @@ class AddEvent extends React.Component {
       alert('Add people: must be an email')
     } else {
     this.state.attendees.push(this.state.attendee);
-    console.log(this.state.attendees);
     this.setState({attendees: this.state.attendees});
     this.state.attendee = '';
     }
@@ -129,7 +128,6 @@ class AddEvent extends React.Component {
       }
     })
     this.setState({attendees: remainingAttendees});
-    console.log(this.state.attendees);
   }
 
   render() {
@@ -188,7 +186,7 @@ class AddEvent extends React.Component {
                 <button onClick={this.addToAttendees} className="addBtn">Add</button><br />
                 <div className="attendee-list">
           {this.state.attendees.map((attendee, i) => (
-            <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={this.removeAttendee}/>
+            <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={() => this.removeAttendee(attendee.email)}/>
           ))}
         </div>
               </div>
