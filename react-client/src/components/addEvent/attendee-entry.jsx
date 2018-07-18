@@ -1,10 +1,10 @@
 import React from 'react';
 
 
-const AttendeeEntry = ({ attendee }) => (
-  <ul className="white-container">
-    <li className="attendee">{attendee}</li>
-  </ul>
+const AttendeeEntry = ({ attendee, removeAttendee }) => (
+  <div className="attendee-container">
+    <div className="attendee">{attendee}</div>
+  </div>
 );
 
 
