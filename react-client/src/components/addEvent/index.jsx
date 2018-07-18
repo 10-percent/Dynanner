@@ -30,6 +30,7 @@ class AddEvent extends React.Component {
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
     this.addToAttendees = this.addToAttendees.bind(this);
+    this.removeAttendee = this.removeAttendee.bind(this);
   }
   // small change
   componentDidMount() {
@@ -111,8 +112,8 @@ class AddEvent extends React.Component {
       email: attendee,
       responseStatus: 'needsAction'
     }
-    if (this.state.attendee === '') {
-      this.state.attendee;
+    if (this.state.attendee === '' || !this.state.attendee.email.includes('@') || !this.state.attendee.email.includes('.com')) {
+      alert('Add people: must be an email')
     } else {
     this.state.attendees.push(this.state.attendee);
     console.log(this.state.attendees);
@@ -121,8 +122,14 @@ class AddEvent extends React.Component {
     }
   }
 
-  removeAttendee() {
-
+  removeAttendee(email) {
+    const remainingAttendees = this.state.attendees.filter(attendee => {
+      if (attendee.email !== email) {
+        return attendee;
+      }
+    })
+    this.setState({attendees: remainingAttendees});
+    console.log(this.state.attendees);
   }
 
   render() {
@@ -176,12 +183,12 @@ class AddEvent extends React.Component {
 
             <div className="form-group">
               <div>
-                <h6>Add People</h6>
+                <h6>Add People with Email</h6>
                 <input className="form-control" type="text" onChange={this.handleChange} name="attendee" ref="attendee" value={this.state.attendee}/>
                 <button onClick={this.addToAttendees} className="addBtn">Add</button><br />
                 <div className="attendee-list">
           {this.state.attendees.map((attendee, i) => (
-            <AttendeeEntry attendee={attendee.email} key={i} />
+            <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={this.removeAttendee}/>
           ))}
         </div>
               </div>
