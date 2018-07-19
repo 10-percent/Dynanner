@@ -14,6 +14,12 @@ const oauth2Client = new OAuth2(
   '/auth/google/callback',
 );
 
+const options = {
+  api_key: process.env.CLOUDINARY_KEY,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_secret: process.env.CLOUDINARY_SECRET
+};
+
 const getEvents = async (token, callback) => {
   const options = {
     method: 'GET',
@@ -161,24 +167,29 @@ const addReview = async (id, feedback, event, callback) => {
     if (err) {
       callback(err);
     } else {
-      const reviewedEvent = user.events.id(event._id);
-      const newFeedback = new db.Feedback({
-        pros: feedback.pros.reduce((allPros, pro) => {
-          allPros.push(pro);
-          return allPros;
-        }, []),
-        cons: feedback.cons.reduce((allCons, con) => {
-          allCons.push(con);
-          return allCons;
-        }, []),
-        journal: feedback.journal,
-        photo: feedback.photo
-      });
-      reviewedEvent.feedback.push(newFeedback);
-      reviewedEvent.category = event.category;
-      reviewedEvent.isComplete = true;
-      user.save();
-      callback(null);
+      cloudinary.v2.uploader.upload(feedback.photo, options, (err, response) => {
+        if(err) {
+          return res.status(400).json({ err, type: 'CLOUD' });
+        }
+        const reviewedEvent = user.events.id(event._id);
+        const newFeedback = new db.Feedback({
+          pros: feedback.pros.reduce((allPros, pro) => {
+            allPros.push(pro);
+            return allPros;
+          }, []),
+          cons: feedback.cons.reduce((allCons, con) => {
+            allCons.push(con);
+            return allCons;
+          }, []),
+          journal: feedback.journal,
+          photo: response.url
+        });
+        reviewedEvent.feedback.push(newFeedback);
+        reviewedEvent.category = event.category;
+        reviewedEvent.isComplete = true;
+        user.save();
+        callback(null);
+      })
     }
   });
 };
