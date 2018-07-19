@@ -70,7 +70,7 @@ class UpcomingEventEntry extends React.Component {
             <ul className="home-event-info">
               <li className="home-event-description">
               <label className="home-label">Event Description:</label>
-                <div>
+                <div className="home-description">
                 {description}
                 </div>
               </li>
