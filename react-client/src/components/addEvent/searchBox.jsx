@@ -20,7 +20,7 @@ class SearchBox extends React.Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then((latLng) => {
-        this.props.onPlaceLookUp(latLng);
+        this.props.onPlaceLookUp(latLng, address);
         console.log('Success', latLng)
       })
       .catch(error => console.error('Error', error));

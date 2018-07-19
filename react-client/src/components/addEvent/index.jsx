@@ -7,6 +7,7 @@ import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.jsx';
 import AttendeeEntry from './attendeeEntry.jsx';
 import SearchBox from './searchBox.jsx';
+import Header from '../../header.jsx';
 import Axios from 'axios';
 
 
@@ -27,7 +28,8 @@ class AddEvent extends React.Component {
         lat: 29.9451248,
         lng: -90.0700054
       },
-      zoom: 11
+      zoom: 11,
+      address: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -43,14 +45,15 @@ class AddEvent extends React.Component {
     this.getEmail();
     this.getPastEvents();
   }
-  onPlaceLookUp(address) {
+  onPlaceLookUp(lnglat, address) {
     this.setState({
       center: {
-        lat: address.lat,
-        lng: address.lng
-      }
+        lat: lnglat.lat,
+        lng: lnglat.lng
+      },
+      address: address
     }, () => {
-      console.log(this.state);
+      // console.log(this.state);
     })
   }
 
@@ -89,7 +92,8 @@ class AddEvent extends React.Component {
         description: this.state.description,
         attendees: this.state.attendees,
         lng: this.state.center.lng,
-        lat: this.state.center.lat
+        lat: this.state.center.lat,
+        location: this.state.address
       },
     })
       .then(() => {
@@ -99,7 +103,8 @@ class AddEvent extends React.Component {
             title: this.state.title,
             date: this.state.date,
             description: this.state.description,
-            attendees: this.state.attendees
+            attendees: this.state.attendees,
+            location: this.state.address
           },
         });
       })
@@ -152,7 +157,7 @@ class AddEvent extends React.Component {
     const { redirect, calSrc } = this.state;
     return (
       <div className="body">
-
+      <Header />
         <div className="row justify-content-around">
 
           <div className="form col-4">

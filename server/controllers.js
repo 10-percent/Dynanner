@@ -70,6 +70,7 @@ const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, c
           start: { dateTime: event.date, timeZone: 'America/Chicago' },
           end: { dateTime: event.date, timeZone: 'America/Chicago' },
           attendees: event.attendees,
+          location: event.location
         },
       json: true,
     };
@@ -113,7 +114,8 @@ const addEvent = async (id, event, callback) => {
           return allPeople;
         }, []),
         lng: event.lng,
-        lat: event.lat
+        lat: event.lat,
+        location: event.location
       });
       user.events.push(newEvent);
       await user.save();
