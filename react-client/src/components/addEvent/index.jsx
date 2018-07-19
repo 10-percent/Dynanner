@@ -200,8 +200,8 @@ class AddEvent extends React.Component {
             <div className="form-group">
               <div>
                 <h6>Add People with Email</h6>
-                <input className="form-control" type="text" onChange={this.handleChange} name="attendee" ref="attendee" value={this.state.attendee} />
-                <button onClick={this.addToAttendees} className="addBtn">Add</button><br />
+                <input className="form-control" type="text" onChange={this.handleChange} name="attendee" ref="attendee" value={this.state.attendee}/>
+                <button onClick={this.addToAttendees} className="btn btn-outline-info" >Add</button><br />
                 <div className="attendee-list">
                   {this.state.attendees.map((attendee, i) => (
                     <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={() => this.removeAttendee(attendee.email)} />
