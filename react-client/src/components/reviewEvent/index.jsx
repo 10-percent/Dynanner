@@ -32,7 +32,6 @@ class ReviewEvent extends React.Component {
   }
   handleSubmit() {
     this.props.location.state.event.category = this.state.category;
-    console.log(this.photo);
     axios.post('/api/addReview', {
       event: this.props.location.state.event,
       feedback: {
