@@ -28,7 +28,7 @@ const eventSchema = mongoose.Schema({
   feedback: [feedbackSchema],
   date: String,
   isComplete: Boolean,
-  attendees: Array,
+  attendees: [attendeeSchema],
   lng: Number,
   lat: Number
 }, {
