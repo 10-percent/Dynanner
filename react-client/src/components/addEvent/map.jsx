@@ -1,7 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 import React, { Component } from 'react';
 import config from '../../../../config.json';
-import SearchBox from './searchBox.jsx';
 
 const greatPlaceStyle = {
   position: 'absolute',
@@ -33,40 +32,31 @@ class MyMapComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: {
-        lat: 29.9451248,
-        lng: -90.0700054
-      },
-      zoom: 11
+      
     }
-    this.onPlaceLookUp = this.onPlaceLookUp.bind(this);
   }
   // componentDidMount() {
-  //   this.render();
+  //   this.setState({
+  //     center: {
+  //       lat: this.props.center.lat,
+  //       lng: this.props.center.lng
+  //     }
+  //   })
   // }
-  onPlaceLookUp(address) {
-    this.setState({
-      center: {
-        lat: address.lat,
-        lng: address.lng
-      }
-    })
-  }
   render() {
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '400px', width: '100%' }}>
-        <SearchBox onPlaceLookUp={this.onPlaceLookUp} />
         <GoogleMapReact
           bootstrapURLKeys={{ key: `${config.googleMapsAPI}` }}
-          center={this.state.center}
-          defaultZoom={this.state.zoom}
+          center={this.props.center}
+          defaultZoom={15}
           defaultCenter={{
             lat: 29.9451248,
             lng: -90.0700054
           }}
         >
-        <Marker lat={this.state.center.lat} lng={this.state.center.lng} />
+        <Marker lat={this.props.center.lat} lng={this.props.center.lng} />
         </GoogleMapReact>
       </div>
     );

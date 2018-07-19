@@ -43,6 +43,26 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
+.attendee-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 12px 8px 8px 12px;
+  width: 400px;
+  opacity: 0.8;
+}
+
+.attendee {
+  list-style-type: none;
+  background-color: white;
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+.attendee-button {
+  font-size: 20px;
+  margin-left: 1px;
+}
+
 /* log in page */
 
 .jumbotron {
@@ -229,4 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 .journalBox {
   height: 10em;
   width: 100%;
+}
+.search-box-container {
+  overflow: hidden;
 }
