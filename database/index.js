@@ -13,6 +13,13 @@ const feedbackSchema = mongoose.Schema({
   photo: String
 });
 
+const attendeeSchema = mongoose.Schema({
+  email: String,
+  responseStatus: String,
+}, {
+  usePushEach: true,
+});
+
 const eventSchema = mongoose.Schema({
   title: String,
   category: String,
@@ -21,18 +28,14 @@ const eventSchema = mongoose.Schema({
   feedback: [feedbackSchema],
   date: String,
   isComplete: Boolean,
-  attendees: Array,
+  attendees: [attendeeSchema],
   lng: Number,
-  lat: Number
+  lat: Number,
+  location: String
 }, {
   usePushEach: true,
 });
 
-const attendeeSchema = mongoose.Schema({
-  email: String,
-}, {
-  usePushEach: true,
-});
 
 const contactSchema = mongoose.Schema({
   name: String,

@@ -70,6 +70,8 @@ passport.use('google', new GoogleStrategy({
           title: event.summary,
           description: event.description,
           date: event.start.dateTime,
+          location: event.location,
+          attendees: event.attendees
         }, () => {});
       });
     });
