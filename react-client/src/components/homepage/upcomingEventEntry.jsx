@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import moment from 'moment';
 import NewEventMap from './newEventMap.jsx';
+import AttendeeEntry from './attendeeEntry.jsx'
 
 class UpcomingEventEntry extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class UpcomingEventEntry extends React.Component {
   }
 
   render() {
-    const { title, description, date, lng, lat } = this.props.event;
+    const { title, description, date, lng, lat, attendees } = this.props.event;
     const id = `#${title}`;
     let map;
     if (lng && lat) {
@@ -62,14 +63,26 @@ class UpcomingEventEntry extends React.Component {
 
         <div id={title} className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
           <div className="card-body">
-          Event Location:
+          <label className="home-label">Event Location:</label>
             <div className="event-map">
             {map}
             </div>
-            Event Description:
-            <div className="col-md-6">
-            {description}
-            </div>
+            <ul className="home-event-info">
+              <li className="home-event-description">
+              <label className="home-label">Event Description:</label>
+                <div className="home-description">
+                {description}
+                </div>
+              </li>
+              <li className="home-attendees">
+                <label className="home-label">Event Attendees:</label>
+                <div className="attendee-list">
+                  {attendees.map((attendee, i) => (
+                    <AttendeeEntry attendee={attendee.email} key={i} />
+                  ))}
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

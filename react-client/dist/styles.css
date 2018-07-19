@@ -231,6 +231,29 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1em;
 }
 
+.home-label {
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+.home-attendees {
+  float: right;
+  list-style-type: none;
+}
+
+.home-attendee {
+  font-size: 18px;
+}
+
+.home-description {
+  font-size: 18px;
+}
+
+.home-event-description {
+  float: left;
+  list-style-type: none;
+}
+
 /* review event page */
 
 .form-group {

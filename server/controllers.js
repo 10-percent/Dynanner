@@ -75,7 +75,6 @@ const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, c
     };
     request(options, (error, response, body) => {
       if (error) { console.log(`Error trying to add event to google calendar: ${error}`); }
-      callback(response, body);
     });
   });
 };
@@ -109,7 +108,10 @@ const addEvent = async (id, event, callback) => {
         date: event.date || 'you will know when the time is right',
         description: event.description || '',
         isComplete: event.isComplete || false,
-        attendees: event.attentedees,
+        attendees: event.attendees.reduce((allPeople, attendee) => {
+          allPeople.push(attendee);
+          return allPeople;
+        }, []),
         lng: event.lng,
         lat: event.lat
       });
