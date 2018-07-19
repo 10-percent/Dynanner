@@ -4,9 +4,10 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
-import MyMapComponent from './map.js';
+import MyMapComponent from './map.jsx';
+import AttendeeEntry from './attendee-entry.jsx';
+import SearchBox from './searchBox.jsx';
 import Axios from 'axios';
-import config from './../../../../config.json';
 
 
 class AddEvent extends React.Component {
@@ -19,18 +20,38 @@ class AddEvent extends React.Component {
       description: 'just do it',
       calSrc: '',
       events: [],
+      attendee: '',
+      attendees: [],
       redirect: false,
+      center: {
+        lat: 29.9451248,
+        lng: -90.0700054
+      },
+      zoom: 11
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getEmail = this.getEmail.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.getPastEvents = this.getPastEvents.bind(this);
+    this.addToAttendees = this.addToAttendees.bind(this);
+    this.removeAttendee = this.removeAttendee.bind(this);
+    this.onPlaceLookUp = this.onPlaceLookUp.bind(this);
   }
   // small change
   componentDidMount() {
     this.getEmail();
     this.getPastEvents();
+  }
+  onPlaceLookUp(address) {
+    this.setState({
+      center: {
+        lat: address.lat,
+        lng: address.lng
+      }
+    }, () => {
+      console.log(this.state);
+    })
   }
 
   getPastEvents(category) {
@@ -66,6 +87,9 @@ class AddEvent extends React.Component {
         title: this.state.title,
         date: this.state.date.toISOString(true),
         description: this.state.description,
+        attendees: this.state.attendees,
+        lng: this.state.center.lng,
+        lat: this.state.center.lat
       },
     })
       .then(() => {
@@ -75,6 +99,7 @@ class AddEvent extends React.Component {
             title: this.state.title,
             date: this.state.date,
             description: this.state.description,
+            attendees: this.state.attendees
           },
         });
       })
@@ -97,6 +122,30 @@ class AddEvent extends React.Component {
 
   changeDate(date) {
     this.setState({ date });
+  }
+
+  addToAttendees() {
+    const attendee = this.state.attendee
+    this.state.attendee = {
+      email: attendee,
+      responseStatus: 'needsAction'
+    }
+    if (this.state.attendee === '' || !this.state.attendee.email.includes('@') || !this.state.attendee.email.includes('.com')) {
+      alert('Add people: must be an email')
+    } else {
+      this.state.attendees.push(this.state.attendee);
+      this.setState({ attendees: this.state.attendees });
+      this.state.attendee = '';
+    }
+  }
+
+  removeAttendee(email) {
+    const remainingAttendees = this.state.attendees.filter(attendee => {
+      if (attendee.email !== email) {
+        return attendee;
+      }
+    })
+    this.setState({ attendees: remainingAttendees });
   }
 
   render() {
@@ -148,28 +197,37 @@ class AddEvent extends React.Component {
               </div>
             </div>
 
+            <div className="form-group">
+              <div>
+                <h6>Add People with Email</h6>
+                <input className="form-control" type="text" onChange={this.handleChange} name="attendee" ref="attendee" value={this.state.attendee}/>
+                <button onClick={this.addToAttendees} className="btn btn-outline-info" >Add</button><br />
+                <div className="attendee-list">
+                  {this.state.attendees.map((attendee, i) => (
+                    <AttendeeEntry attendee={attendee.email} key={i} removeAttendee={() => this.removeAttendee(attendee.email)} />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className='form-group'>
+            <div>
+              <h6>Location</h6>
+                <SearchBox onPlaceLookUp={this.onPlaceLookUp} />
+            </div>
+            </div>
+
             <button className="btn btn-outline-info" type="submit" onClick={this.handleSubmit}>
               Submit
             </button>
-
           </div>
-
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
           </div>
-
         </div>
-
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
-        <MyMapComponent
-          isMarkerShown
-          googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${config.googleMapsAPI}&callback=initMap`}
-          loadingElement={<div style={{ height: '100%' }} />}
-          containerElement={<div style={{ height: '400px' }} />}
-          mapElement={<div style={{ height: '100%' }} />}
-        />
+        <MyMapComponent onPlaceLookUp={this.onPlaceLookUp} center={this.state.center} />
       </div>
     );
   }

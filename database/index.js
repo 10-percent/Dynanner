@@ -21,6 +21,15 @@ const eventSchema = mongoose.Schema({
   feedback: [feedbackSchema],
   date: String,
   isComplete: Boolean,
+  attendees: Array,
+  lng: Number,
+  lat: Number
+}, {
+  usePushEach: true,
+});
+
+const attendeeSchema = mongoose.Schema({
+  email: String,
 }, {
   usePushEach: true,
 });
@@ -56,6 +65,7 @@ const userSchema = mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 const IEvent = mongoose.model('IEvent', eventSchema);
+const Attendee = mongoose.model('Attendee', attendeeSchema);
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 const Contact = mongoose.model('Contact', contactSchema);
 const Photo = mongoose.model('Photo', photoSchema);
@@ -63,5 +73,6 @@ const Photo = mongoose.model('Photo', photoSchema);
 module.exports.User = User;
 module.exports.IEvent = IEvent;
 module.exports.Feedback = Feedback;
+module.exports.Attendee = Attendee;
 module.exports.Contact = Contact;
 module.exports.Photo = Photo;

@@ -57,7 +57,7 @@ const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, c
   oauth2Client.refreshAccessToken((err, tokens) => {
     const options = {
       method: 'POST',
-      url: 'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      url: `https://www.googleapis.com/calendar/v3/calendars/primary/events?sendNotifications=true`,
       headers:
         {
           Authorization: `Bearer ${tokens.access_token}`,
@@ -69,12 +69,13 @@ const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, c
           description: event.description,
           start: { dateTime: event.date, timeZone: 'America/Chicago' },
           end: { dateTime: event.date, timeZone: 'America/Chicago' },
+          attendees: event.attendees,
         },
       json: true,
     };
     request(options, (error, response, body) => {
       if (error) { console.log(`Error trying to add event to google calendar: ${error}`); }
-      callback();
+      callback(response, body);
     });
   });
 };
@@ -108,6 +109,9 @@ const addEvent = async (id, event, callback) => {
         date: event.date || 'you will know when the time is right',
         description: event.description || '',
         isComplete: event.isComplete || false,
+        attendees: event.attentedees,
+        lng: event.lng,
+        lat: event.lat
       });
       user.events.push(newEvent);
       await user.save();
@@ -144,6 +148,7 @@ const updateEvent = async (id, event, callback) => {
         if (event.title) { e.title = event.title; }
         if (event.category) { e.category = event.category; }
         if (event.date) { e.date = event.date; }
+        if (event.attendees) {e.attendees = event.attendees}
         user.save();
       }
     });

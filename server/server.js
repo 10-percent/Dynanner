@@ -91,7 +91,6 @@ passport.use('google', new GoogleStrategy({
       if (!photos.mediaItems) {
         console.log('No Photos!');
       } else {
-        console.log(photos.mediaItems);
         const photoList = photos.mediaItems.map(photo => photo)
         photoList.forEach(async (photo) => {
           await controller.addPhotos(photo, profile.id)
