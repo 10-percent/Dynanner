@@ -8,9 +8,8 @@ class EventReview extends React.Component {
   }
   render() {
     const { currentReview, currentReviewEvent } = this.props;
-    const { pros, cons, journal } = currentReview;
+    const { pros, cons, journal, photo } = currentReview;
     const { title, description, date } = currentReviewEvent;
-
     return (
       <div className="flex-column align-items-start">
         <div className="d-flex row justify-space-between">
@@ -44,6 +43,9 @@ class EventReview extends React.Component {
         {/* journal */}
         <h5>Journal:</h5>
         <p>{journal}</p>
+        {/*Photo*/}
+        <h6>Photo:</h6>
+        <img src={photo}/>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Link, Switch } from 'react-router-dom';
 import Home from './components/homepage/index.jsx';
 import AddEvent from './components/addEvent/index.jsx';
 import PastEvents from './components/pastEvents/index.jsx';
@@ -26,14 +26,12 @@ class Header extends React.Component {
             </p>
           </div>
         </nav>
-        <div>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/addEvent" component={AddEvent} />
-            <Route path="/pastEvents" component={PastEvents} />
-            <Route path="/reviewEvent" component={ReviewEvent} />
-          </Switch>
-        </div>
+        {/* <div>
+            <Link to="/">Home</Link>
+            <Link to="/addEvent">Add Event</Link>
+            <Link to="/pastEvents">Past Events</Link>
+            <Link to="/reviewEvent">Review Event</Link>
+        </div> */}
       </div>
     );
   }

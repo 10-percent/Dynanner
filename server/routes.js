@@ -181,6 +181,7 @@ router.post('/api/addReview', async (req, res) => {
     if (err) {
       console.error(err);
     }
+    console.log(req.body.feedback);
     res.send();
   });
 });

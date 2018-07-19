@@ -172,6 +172,7 @@ const addReview = async (id, feedback, event, callback) => {
           return allCons;
         }, []),
         journal: feedback.journal,
+        photo: feedback.photo
       });
       reviewedEvent.feedback.push(newFeedback);
       reviewedEvent.category = event.category;
