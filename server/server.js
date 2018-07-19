@@ -18,7 +18,7 @@ app.use(express.static(pathway));
 app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: 52428800 }));
 app.use(passport.initialize());
 app.use(passport.session());
 

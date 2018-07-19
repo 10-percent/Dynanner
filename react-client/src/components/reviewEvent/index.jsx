@@ -12,6 +12,7 @@ class ReviewEvent extends React.Component {
       cons: [],
       conEntry: 'do not make the same mistake twice',
       journal: 'a detailed journey inside my emotional experience',
+      photo: '',
       redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -20,6 +21,8 @@ class ReviewEvent extends React.Component {
     this.addCon = this.addCon.bind(this);
     this.deletePro = this.deletePro.bind(this);
     this.deleteCon = this.deleteCon.bind(this);
+    this.addPhoto = this.addPhoto.bind(this);
+    this.encodeImageFileAsURL = this.encodeImageFileAsURL.bind(this);
   }
   handleChange(event) {
     const { name } = event.target;
@@ -29,12 +32,14 @@ class ReviewEvent extends React.Component {
   }
   handleSubmit() {
     this.props.location.state.event.category = this.state.category;
+    console.log(this.photo);
     axios.post('/api/addReview', {
       event: this.props.location.state.event,
       feedback: {
         pros: this.state.pros,
         cons: this.state.cons,
         journal: this.state.journal,
+        photo: this.state.photo
       },
     })
       .then((response) => {
@@ -68,6 +73,20 @@ class ReviewEvent extends React.Component {
       cons: this.state.cons.filter(con => con !== event.target.value),
     });
   }
+  addPhoto(url) {
+    this.setState({
+      photo: url
+    })
+  }
+  encodeImageFileAsURL(element) {
+  const that = this;
+  var file = element.target.files[0];
+  var reader = new FileReader();
+  reader.onloadend = function () {
+    that.addPhoto(reader.result);
+  }
+  reader.readAsDataURL(file);
+}
   render() {
     return (
       <div className="body reviewEvent row justify-content-around">
@@ -159,7 +178,17 @@ class ReviewEvent extends React.Component {
               </div>
             </div>
           </div>
-
+          <div className="form-group">
+          <h6>Upload an image of the Event</h6>
+            <input
+              type="file"
+              className="form-control"
+              name="photoEntry"
+              onChange={this.encodeImageFileAsURL}
+              ref="photo"
+              accept=".jpg, .jpeg, .png"
+            />
+          </div>
           <div className="form-group">
             <h6>Further Reflections</h6>
             <textarea className="journalBox form-control" type="text" name="journal" onChange={this.handleChange} ref="journal" />

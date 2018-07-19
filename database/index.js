@@ -10,6 +10,7 @@ const feedbackSchema = mongoose.Schema({
   pros: [],
   cons: [],
   journal: String,
+  photo: String
 });
 
 const eventSchema = mongoose.Schema({
