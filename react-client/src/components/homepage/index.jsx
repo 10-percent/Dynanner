@@ -97,6 +97,7 @@ class Home extends React.Component {
     const { currentUser } = this.state;
     return (
       <div className="body">
+      <Header />
         <h3 id="welcome">Welcome back, {currentUser}!</h3>
         <div className="container-fluid">
           <div className="row">

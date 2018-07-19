@@ -26,12 +26,12 @@ class Header extends React.Component {
             </p>
           </div>
         </nav>
-        <div>
+        {/* <div>
             <Link to="/">Home</Link>
             <Link to="/addEvent">Add Event</Link>
             <Link to="/pastEvents">Past Events</Link>
             <Link to="/reviewEvent">Review Event</Link>
-        </div>
+        </div> */}
       </div>
     );
   }
