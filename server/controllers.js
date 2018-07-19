@@ -3,6 +3,7 @@ const db = require('../database/index');
 const dotenv = require('dotenv').config();
 const { google } = require('googleapis');
 const twilio = require('twilio');
+const cloudinary = require('cloudinary');
 const authToken = process.env.TWILI_AUTH_TOKEN;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
 const client = new twilio(accountSID, authToken);
