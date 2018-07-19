@@ -111,7 +111,6 @@ router.get('/api/upcomingEvents', (req, res) => {
       const chronological = events.sort((a, b) => {
         const dateA = moment(a.date).unix();
         const dateB = moment(b.date).unix();
-
         return dateA - dateB;
       });
       res.send(chronological);
@@ -181,7 +180,6 @@ router.post('/api/addReview', async (req, res) => {
     if (err) {
       console.error(err);
     }
-    console.log(req.body.feedback);
     res.send();
   });
 });

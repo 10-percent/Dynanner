@@ -23,7 +23,8 @@ const eventSchema = mongoose.Schema({
   isComplete: Boolean,
   attendees: Array,
   lng: Number,
-  lat: Number
+  lat: Number,
+  location: String
 }, {
   usePushEach: true,
 });

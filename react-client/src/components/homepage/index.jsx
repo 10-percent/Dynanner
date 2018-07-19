@@ -1,9 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
-import webPush from 'web-push';
 import UpcomingEvents from './upcomingEvents.jsx';
-import ContactList from './contactList.jsx';
 import Header from '../../header.jsx';
 import PastEventsHome from './pastEvents.jsx';
 
