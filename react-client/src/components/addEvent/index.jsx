@@ -219,15 +219,11 @@ class AddEvent extends React.Component {
             <button className="btn btn-outline-info" type="submit" onClick={this.handleSubmit}>
               Submit
             </button>
-
           </div>
-
           <div className="col-7">
             <iframe title="user-calendar" src={calSrc} width="800" height="600" frameBorder="0" scrolling="no" />
           </div>
-
         </div>
-
         {redirect && (
           <Redirect to={{ pathname: '/pastEvents', state: { category: this.state.category, title: this.state.title, events: this.state.events } }} component={PastEvents} />
         )}
