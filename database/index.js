@@ -21,6 +21,8 @@ const eventSchema = mongoose.Schema({
   date: String,
   isComplete: Boolean,
   attendees: Array,
+  lng: Number,
+  lat: Number
 }, {
   usePushEach: true,
 });
