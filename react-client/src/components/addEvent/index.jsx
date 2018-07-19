@@ -5,7 +5,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import PastEvents from '../pastEvents/index.jsx';
 import MyMapComponent from './map.jsx';
-import AttendeeEntry from './attendee-entry.jsx';
+import AttendeeEntry from './attendeeEntry.jsx';
 import SearchBox from './searchBox.jsx';
 import Axios from 'axios';
 
