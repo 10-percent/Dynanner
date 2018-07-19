@@ -50,7 +50,7 @@ class NewEventMap extends Component {
         <GoogleMapReact
           bootstrapURLKeys={{ key: `${config.googleMapsAPI}` }}
           center={this.props.center}
-          defaultZoom={15}
+          defaultZoom={17}
           defaultCenter={{
             lat: 29.9451248,
             lng: -90.0700054

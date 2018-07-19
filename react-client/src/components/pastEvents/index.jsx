@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import EventReview from './eventReview.jsx';
 import EventsList from './eventsList.jsx';
+import Header from '../../header.jsx';
 
 class PastEvents extends React.Component {
   constructor(props) {
@@ -87,6 +88,7 @@ class PastEvents extends React.Component {
 
     return (
       <div className="body">
+      <Header />
         <div className="container-fluid contents">
           <div className="row justify-content-end">
             <div id="work-play-dropdown-col" className="col-lg-4">
