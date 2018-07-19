@@ -7,6 +7,7 @@ import {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import AttendeeEntry from './attendeeEntry.jsx'
 
 class UpcomingEventEntry extends React.Component {
   constructor(props) {
@@ -43,7 +44,8 @@ class UpcomingEventEntry extends React.Component {
       .catch(error => console.error('Error', error));
   }
   render() {
-    const { title, description, date, lng, lat, location } = this.props.event;
+    const { title, description, date, lng, lat, attendees, location } = this.props.event;
+    const id = `#${title}`;
     let map;
     this.locationConvert(location);
     if (lng && lat) {
@@ -53,7 +55,6 @@ class UpcomingEventEntry extends React.Component {
     } else {
       map = <span>This event has no location</span>
     }
-    const id = `#${title}`;
     return (
       <div className="card upcoming-event-entry">
         <div className="card-header" id="headingOne">
@@ -83,14 +84,26 @@ class UpcomingEventEntry extends React.Component {
 
         <div id={title} className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
           <div className="card-body">
-            Event Location:
+          <label className="home-label">Event Location:</label>
             <div className="event-map">
               {map}
             </div>
-            Event Description:
-            <div className="col-md-6">
-              {description}
-            </div>
+            <ul className="home-event-info">
+              <li className="home-event-description">
+              <label className="home-label">Event Description:</label>
+                <div className="home-description">
+                {description}
+                </div>
+              </li>
+              <li className="home-attendees">
+                <label className="home-label">Event Attendees:</label>
+                <div className="attendee-list">
+                  {attendees.map((attendee, i) => (
+                    <AttendeeEntry attendee={attendee.email} key={i} />
+                  ))}
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
