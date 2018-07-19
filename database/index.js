@@ -10,6 +10,7 @@ const feedbackSchema = mongoose.Schema({
   pros: [],
   cons: [],
   journal: String,
+  photo: String
 });
 
 const attendeeSchema = mongoose.Schema({
@@ -28,6 +29,8 @@ const eventSchema = mongoose.Schema({
   date: String,
   isComplete: Boolean,
   attendees: Array,
+  lng: Number,
+  lat: Number
 }, {
   usePushEach: true,
 });

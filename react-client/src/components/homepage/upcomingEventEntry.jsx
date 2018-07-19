@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import moment from 'moment';
+import NewEventMap from './newEventMap.jsx';
 
 class UpcomingEventEntry extends React.Component {
   constructor(props) {
@@ -24,9 +25,14 @@ class UpcomingEventEntry extends React.Component {
   }
 
   render() {
-    const { title, description, date } = this.props.event;
+    const { title, description, date, lng, lat } = this.props.event;
     const id = `#${title}`;
-
+    let map;
+    if (lng && lat) {
+      map = <NewEventMap center ={{lng, lat}} />
+    } else {
+      map = <span>This event has no location</span>
+    }
     return (
       <div className="card upcoming-event-entry">
         <div className="card-header" id="headingOne">
@@ -56,7 +62,14 @@ class UpcomingEventEntry extends React.Component {
 
         <div id={title} className="collapse" aria-labelledby="headingOne" data-parent="#accordion">
           <div className="card-body">
+          Event Location:
+            <div className="event-map">
+            {map}
+            </div>
+            Event Description:
+            <div className="col-md-6">
             {description}
+            </div>
           </div>
         </div>
       </div>

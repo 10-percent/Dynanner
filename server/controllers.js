@@ -75,7 +75,7 @@ const addEventToGoogleCal = async (refreshtoken, event, authCode, accesstoken, c
     };
     request(options, (error, response, body) => {
       if (error) { console.log(`Error trying to add event to google calendar: ${error}`); }
-      callback();
+      callback(response, body);
     });
   });
 };
@@ -110,6 +110,8 @@ const addEvent = async (id, event, callback) => {
         description: event.description || '',
         isComplete: event.isComplete || false,
         attendees: event.attentedees,
+        lng: event.lng,
+        lat: event.lat
       });
       user.events.push(newEvent);
       await user.save();
@@ -170,6 +172,7 @@ const addReview = async (id, feedback, event, callback) => {
           return allCons;
         }, []),
         journal: feedback.journal,
+        photo: feedback.photo
       });
       reviewedEvent.feedback.push(newFeedback);
       reviewedEvent.category = event.category;

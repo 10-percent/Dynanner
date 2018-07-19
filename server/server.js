@@ -18,7 +18,7 @@ app.use(express.static(pathway));
 app.use(express.static(sw));
 app.use(cookieParser('wearekumquat'));
 app.use(session({ secret: 'wearekumquat' }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: 52428800 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -91,7 +91,6 @@ passport.use('google', new GoogleStrategy({
       if (!photos.mediaItems) {
         console.log('No Photos!');
       } else {
-        console.log(photos.mediaItems);
         const photoList = photos.mediaItems.map(photo => photo)
         photoList.forEach(async (photo) => {
           await controller.addPhotos(photo, profile.id)
